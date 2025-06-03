@@ -2,12 +2,14 @@
 
 
 ChessApp::ChessApp()
-    : _window(sf::VideoMode(800, 800), "ChessEngine")
+    : _window(sf::VideoMode(Config::WindowWidth, Config::WindowHeight), "ChessEngine")
+    , _uiState()
     , _textureManager()
     , _model()
-    , _view(_model, _textureManager)
-    , _controller(_model)
+    , _view(_model, _textureManager, _uiState)
+    , _controller(_model, _uiState)
 {
+    // Temporary
     _window.setPosition({2440, 200});
 
     _textureManager.load("black_pawn",   "../assets/sprites/black_pawn.png");
@@ -39,10 +41,20 @@ void ChessApp::start()
         sf::Event event;
         while (_window.pollEvent(event))
         {
+            _controller.handleEvent(event);
+
             if (event.type == sf::Event::Closed) 
             {
                 _window.close();
             }
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    _window.close();
+                }
+            }
+
         }
 
         _window.clear({31, 31, 31, 255});

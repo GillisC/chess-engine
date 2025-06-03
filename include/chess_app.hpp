@@ -3,6 +3,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "config.hpp"
+#include "uistate.hpp"
 #include "chess_model.hpp"
 #include "chess_view.hpp"
 #include "chess_controller.hpp"
@@ -12,6 +14,7 @@
 class ChessApp
 {
     sf::RenderWindow _window; 
+    UIState _uiState;
     TextureManager _textureManager;
     ChessModel _model;
     ChessView _view;

@@ -1,7 +1,7 @@
 #include "chess_view.hpp"
 
-ChessView::ChessView(ChessModel& model, TextureManager& manager) :
-    _model(model), _manager(manager) {}
+ChessView::ChessView(ChessModel& model, TextureManager& manager, UIState& uiState) :
+    _model(model), _manager(manager), _uiState(uiState) {}
 
 void ChessView::render(sf::RenderWindow& window)
 {
@@ -9,10 +9,9 @@ void ChessView::render(sf::RenderWindow& window)
     int width = sizeVec.x;
     int height = sizeVec.y;
     
-    float board_ratio = 0.8;
-    int start_pos_x = (width - (width * board_ratio)) / 2;
-    int start_pos_y = (height - (height * board_ratio)) / 2;
-    float square_side = (width * board_ratio) / 8;
+    int start_pos_x = (width - (width * Config::Config::BoardAspectRatio)) / 2;
+    int start_pos_y = (height - (height * Config::BoardAspectRatio)) / 2;
+    float square_side = (width * Config::BoardAspectRatio) / 8;
     
     // Render Text
     sf::Font font;
@@ -30,7 +29,7 @@ void ChessView::render(sf::RenderWindow& window)
     label.setFont(font); 
 
     int letters_start_x = start_pos_x;
-    int letters_start_y = start_pos_y + (board_ratio * height);
+    int letters_start_y = start_pos_y + (Config::BoardAspectRatio * height);
     
     for (int i = 0; i < 8; i++)
     {
@@ -57,6 +56,9 @@ void ChessView::render(sf::RenderWindow& window)
         window.draw(label);
     }
     // Render board
+
+    std::optional<BoardPosition> selectedPiece = _uiState.selectedPiece;
+
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
@@ -72,6 +74,11 @@ void ChessView::render(sf::RenderWindow& window)
             square.setPosition(squareX, squareY);
             window.draw(square);
 
+            if (selectedPiece && j == selectedPiece->x() && i == selectedPiece->y())
+            {
+                square.setFillColor(sf::Color::Blue);
+                window.draw(square);
+            }
             // Draw the piece if its there
             auto piece = _model.atBoardPosition({j, i}); 
             if (piece)
