@@ -1,4 +1,5 @@
 #include "chess_view.hpp"
+#include "SFML/Graphics/CircleShape.hpp"
 
 ChessView::ChessView(ChessModel& model, TextureManager& manager, UIState& uiState) :
     _model(model), _manager(manager), _uiState(uiState) {}
@@ -106,8 +107,22 @@ void ChessView::render(sf::RenderWindow& window)
     {
         auto validMoves = _model.getMoves(_uiState.selectedPiece.value());
 
+        sf::CircleShape indicatorCircle(square_side / 4.0f);
         for (auto move : validMoves)
         {
+            int squareX = start_pos_x + square_side * move.x();
+            int squareY = start_pos_y + square_side * move.y();
+
+            sf::FloatRect indicatorBounds = indicatorCircle.getLocalBounds();
+            indicatorCircle.setOrigin(
+                indicatorBounds.left + indicatorBounds.width / 2.0f,
+                indicatorBounds.top + indicatorBounds.height / 2.0f
+            );
+
+            indicatorCircle.setPosition(squareX + square_side / 2.0f, squareY + square_side / 2.0f);
+            indicatorCircle.setFillColor({ 31, 31, 31, 100 });
+
+            window.draw(indicatorCircle);
 
         }
     }

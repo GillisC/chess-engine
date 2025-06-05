@@ -59,7 +59,7 @@ std::vector<BoardPosition> Pawn::getValidMoves(ChessBoard& board, const BoardPos
         {
             validMoves.push_back({xCord - 1, yCord + 1});
         }
-        if (board.isInBounds({xCord + 1, yCord + 1}) && board.isWhite({xCord + 1, yCord + 1}))
+        if (board.isInBounds()({xCord + 1, yCord + 1&& }board.isWhite({xCord + 1, yCord + 1})
         {
             validMoves.push_back({xCord + 1, yCord + 1});
         }

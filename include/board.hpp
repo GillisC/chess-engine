@@ -15,6 +15,9 @@
 
 #include "board_position.hpp"
 
+class Piece;
+
+
 /*
  * The board class is responsible for keeping track of pieces.
  */
@@ -27,8 +30,10 @@ public:
     void move(BoardPosition startPos, BoardPosition endPos);
     void place(BoardPosition targetPos, std::shared_ptr<Piece> piece);
     std::shared_ptr<Piece> at(const BoardPosition& pos);
-    void print() const;
-
+    bool isPiece(const BoardPosition& pos);
+    bool isWhite(const BoardPosition& pos);
+    bool isBlack(const BoardPosition& pos);
+    bool isInBounds(const BoardPosition& pos);
     
     struct BoardIterator
     {

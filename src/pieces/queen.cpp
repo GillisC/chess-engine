@@ -11,3 +11,11 @@ const sf::Texture& Queen::getTexture(const TextureManager& manager) const
     }
     return manager.get("black_queen");
 }
+
+std::vector<BoardPosition> Queen::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+{
+    std::vector<BoardPosition> validMoves = {};
+
+
+    return validMoves;
+}

@@ -4,6 +4,9 @@
 #include "SFML/Graphics/Texture.hpp"
 
 #include "../texture_manager.hpp"
+#include "board_position.hpp"
+
+class ChessBoard;
 
 class Piece
 {
@@ -20,5 +23,7 @@ public:
     void incrementMoved() { _moved++; }
 
     virtual const sf::Texture& getTexture(const TextureManager& manager) const = 0;
+
+    virtual std::vector<BoardPosition> getValidMoves(ChessBoard& board, const BoardPosition& pos) = 0;
 
 };

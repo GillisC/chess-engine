@@ -1,5 +1,6 @@
 #include "board.hpp"
 
+
 ChessBoard::ChessBoard()
 {
     _board_data = std::vector(8, std::vector<std::shared_ptr<Piece>>(8));
@@ -73,29 +74,23 @@ std::shared_ptr<Piece> ChessBoard::at(const BoardPosition& pos)
     auto piece = _board_data[pos.y()][pos.x()];
     return piece;
 }
-void ChessBoard::print() const
+
+bool ChessBoard::isPiece(const BoardPosition& pos)
 {
-    
-    std::cout << "  " << " A   B   C   D   E   F   G   H " << std::endl;
-    std::cout << "  " << "-----------------------------" << std::endl;
+    return at(pos) != nullptr;
+}
 
-    for (int i = 0; i < _board_data.size(); i++)
-    {
-        std::cout << 8 - i << " ";
-        for (int j = 0; j < _board_data[0].size(); j++)
-        {
-           auto cell = _board_data[i][j];
-           if (cell)
-           {
-               std::cout << "| " << "P" << " ";
-           }
-           else
-           {
-               std::cout << "|   ";
-           }
+bool ChessBoard::isWhite(const BoardPosition& pos)
+{
+    return isPiece(pos) && at(pos)->getColor() == Color::WHITE;
+}
 
-        }
-        std::cout << "\n";
-        std::cout << "  " << "-----------------------------" << std::endl;
-    }
+bool ChessBoard::isBlack(const BoardPosition& pos)
+{
+    return isPiece(pos) && at(pos)->getColor() == Color::BLACK;
+}
+
+bool ChessBoard::isInBounds(const BoardPosition& pos)
+{
+    return (pos.x() >= 0 && pos.x() < 8 && pos.y() >= 0 && pos.y() < 8);
 }

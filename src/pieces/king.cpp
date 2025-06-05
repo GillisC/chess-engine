@@ -11,3 +11,12 @@ const sf::Texture& King::getTexture(const TextureManager& manager) const
     }
     return manager.get("black_king");
 }
+
+
+std::vector<BoardPosition> King::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+{
+    std::vector<BoardPosition> validMoves = {};
+
+
+    return validMoves;
+}

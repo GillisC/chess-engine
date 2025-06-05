@@ -17,33 +17,35 @@ bool ChessModel::isPiece(const BoardPosition& pos)
 }
 
 
+
 std::vector<BoardPosition> ChessModel::getMoves(const BoardPosition& pos)
 {
     std::vector<BoardPosition> validMoves = {};
-    if (!isPiece(pos))
-    {
-        return validMoves; 
-    }
 
-    auto piece = atBoardPosition(pos);
-
-    if (dynamic_cast<Pawn*>(piece.get()))
-    {
-        std::cout << "Clicked a pawn" << std::endl;
-        int xCord = pos.x();
-        int yCord = pos.y();
-
-        if (piece->getColor() == Color::WHITE)
-        {
-            if (!isPiece({xCord, yCord - 1}) && yCord > 0) validMoves.push_back(BoardPosition({xCord, yCord - 1}));
-        }
-    }
-    return validMoves;
+    if (!isPiece(pos)) return validMoves;
+    
+    return atBoardPosition(pos)->getValidMoves(_board, pos);
 }
 
 
 void ChessModel::movePiece(const BoardPosition& from, const BoardPosition& to)
 {
     _board.move(from, to);
+    toggleTurn();
 }
+
+
+Color ChessModel::getTurn()
+{
+    return _currentTurn;
+}
+
+// ========= Private =============
+
+void ChessModel::toggleTurn()
+{
+    _currentTurn = (_currentTurn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+}
+
+
 

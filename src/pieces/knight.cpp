@@ -11,3 +11,14 @@ const sf::Texture& Knight::getTexture(const TextureManager& manager) const
     }
     return manager.get("black_knight");
 }
+
+
+std::vector<BoardPosition> Knight::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+{
+    std::vector<BoardPosition> validMoves = {};
+
+
+    return validMoves;
+}
+
+
