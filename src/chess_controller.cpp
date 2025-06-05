@@ -37,7 +37,22 @@ void ChessController::handleEvent(sf::Event& event)
                 int yCord = (event.mouseButton.y - (Config::WindowHeight - board_height) / 2.0f) / square_side_len;
                 std::cout << "xCord=" << xCord << ", yCord=" << yCord << std::endl;
 
-                _uiState.selectedPiece = BoardPosition({xCord, yCord});
+                if (_model.isPiece({xCord, yCord}))
+                {
+                    _uiState.selectedPiece = BoardPosition({xCord, yCord});
+                    auto validMoves = _model.getMoves({xCord, yCord});
+                    std::cout << "Valid moves len: " << validMoves.size() << std::endl;
+
+                }
+                else if (!_model.isPiece({xCord, yCord}) && _uiState.selectedPiece.has_value())
+                {
+                    auto currentValidMoves = _model.getMoves(_uiState.selectedPiece.value());
+                    auto selectedSquare = BoardPosition({xCord, yCord});
+                    if (std::find(currentValidMoves.begin(), currentValidMoves.end(), selectedSquare) != currentValidMoves.end())
+                    {
+                        _model.movePiece(_uiState.selectedPiece.value(), selectedSquare);
+                    }
+                }
             }
         }
     }

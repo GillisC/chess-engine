@@ -100,4 +100,15 @@ void ChessView::render(sf::RenderWindow& window)
             }
         }
     }
+
+    // Draw indicators for the current available moves
+    if (_uiState.selectedPiece.has_value())
+    {
+        auto validMoves = _model.getMoves(_uiState.selectedPiece.value());
+
+        for (auto move : validMoves)
+        {
+
+        }
+    }
 }

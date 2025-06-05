@@ -54,7 +54,8 @@ ChessBoard::ChessBoard()
 
 void ChessBoard::move(BoardPosition startPos, BoardPosition endPos)
 {
-    return;
+    _board_data[endPos.y()][endPos.x()] = _board_data[startPos.y()][startPos.x()];
+    _board_data[startPos.y()][startPos.x()] = nullptr;
 }
 
 void ChessBoard::place(BoardPosition targetPos, std::shared_ptr<Piece> piece_ptr)
