@@ -4,9 +4,14 @@
 
 Pawn::Pawn(Color color) : Piece(color) {}
 
+
+PieceType Pawn::getType() const {
+    return PieceType::Pawn;
+}
+
 const sf::Texture& Pawn::getTexture(const TextureManager& manager) const 
 {
-    if (getColor() == WHITE)
+    if (getColor() == White)
     {
         return manager.get("white_pawn");
     }
@@ -20,7 +25,7 @@ std::vector<BoardPosition> Pawn::getValidMoves(ChessBoard& board, const BoardPos
     int xCord = pos.x();
     int yCord = pos.y();
 
-    if (piece->getColor() == Color::WHITE)
+    if (piece->getColor() == Color::White)
     {
         if (board.isInBounds({xCord, yCord - 1}) &&
             !board.isPiece({xCord, yCord - 1})) 
@@ -45,7 +50,7 @@ std::vector<BoardPosition> Pawn::getValidMoves(ChessBoard& board, const BoardPos
             validMoves.push_back({xCord + 1, yCord - 1});
         }
     }
-    else if (piece->getColor() == Color::BLACK)
+    else if (piece->getColor() == Color::Black)
     {
         if (board.isInBounds({xCord, yCord + 1})&& !board.isPiece({xCord, yCord + 1}))
         {

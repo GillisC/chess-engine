@@ -3,9 +3,13 @@
 
 Rook::Rook(Color color) : Piece(color) {}
 
+PieceType Rook::getType() const {
+    return PieceType::Rook;
+}
+
 const sf::Texture &Rook::getTexture(const TextureManager &manager) const 
 {
-    if (getColor() == WHITE) 
+    if (getColor() == Color::White) 
     {
         return manager.get("white_rook");
     }

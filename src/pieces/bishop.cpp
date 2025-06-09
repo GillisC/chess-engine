@@ -3,9 +3,13 @@
 
 Bishop::Bishop(Color color) : Piece(color) {}
 
+PieceType Bishop::getType() const {
+    return PieceType::Bishop;
+}
+
 const sf::Texture& Bishop::getTexture(const TextureManager& manager) const 
 {
-    if (getColor() == WHITE)
+    if (getColor() == White)
     {
         return manager.get("white_bishop");
     }

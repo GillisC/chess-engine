@@ -6,7 +6,7 @@
 class ChessModel
 {
     ChessBoard _board;
-    Color _currentTurn = Color::WHITE;
+    Color _currentTurn = Color::White;
 
 public:
     ChessModel();

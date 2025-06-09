@@ -4,9 +4,14 @@
 
 King::King(Color color) : Piece(color) {}
 
+PieceType King::getType() const 
+{
+    return PieceType::King;
+}
+
 const sf::Texture& King::getTexture(const TextureManager& manager) const 
 {
-    if (getColor() == WHITE)
+    if (getColor() == White)
     {
         return manager.get("white_king");
     }

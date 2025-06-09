@@ -1,4 +1,5 @@
 #pragma once
 
 
-enum Color { BLACK, WHITE };
+enum Color { Black, White };
+

@@ -4,9 +4,13 @@
 
 Knight::Knight(Color color) : Piece(color) {}
 
+PieceType Knight::getType() const {
+    return PieceType::Knight;
+}
+
 const sf::Texture& Knight::getTexture(const TextureManager& manager) const 
 {
-    if (getColor() == WHITE)
+    if (getColor() == Color::White)
     {
         return manager.get("white_knight");
     }

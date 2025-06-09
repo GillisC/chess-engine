@@ -4,9 +4,15 @@
 
 Queen::Queen(Color color) : Piece(color) {}
 
+
+PieceType Queen::getType() const 
+{
+    return PieceType::Queen;
+}
+
 const sf::Texture& Queen::getTexture(const TextureManager& manager) const 
 {
-    if (getColor() == WHITE)
+    if (getColor() == White)
     {
         return manager.get("white_queen");
     }

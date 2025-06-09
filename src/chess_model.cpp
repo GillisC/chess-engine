@@ -1,4 +1,4 @@
-#include "../include/chess_model.hpp"
+#include "chess_model.hpp"
 
 ChessModel::ChessModel() : 
     _board()
@@ -44,7 +44,7 @@ Color ChessModel::getTurn()
 
 void ChessModel::toggleTurn()
 {
-    _currentTurn = (_currentTurn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+    _currentTurn = (_currentTurn == Color::White) ? Color::Black : Color::White;
 }
 
 
