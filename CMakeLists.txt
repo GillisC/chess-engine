@@ -8,6 +8,7 @@ set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Libs
 include(FetchContent)
 
 FetchContent_Declare(
@@ -15,11 +16,17 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG        2.6.1
 )
+FetchContent_Declare(
+    catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v3.5.2
+)
+FetchContent_MakeAvailable(sfml catch2)
 
-FetchContent_MakeAvailable(sfml)
-
+# Link
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp)
 file(GLOB_RECURSE HEADERS ${INCLUDE_DIR}/*.hpp)
+
 
 add_executable(ChessEngine ${SOURCES})
 
@@ -30,6 +37,20 @@ target_link_libraries(ChessEngine PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_options(ChessEngine PRIVATE
     -Wall
 )
+
+# Testing
+enable_testing()
+include(CTest)
+
+file(GLOB_RECURSE TEST_SOURCES ${CMAKE_SOURCE_DIR}/test/*.cpp)
+
+add_executable(ChessEngineTests ${TEST_SOURCES})
+
+target_include_directories(ChessEngineTests PRIVATE ${INCLUDE_DIR})
+target_link_libraries(ChessEngineTests PRIVATE Catch2::Catch2WithMain)
+
+include(${CMAKE_SOURCE_DIR}/build/_deps/catch2-src/extras/Catch.cmake)
+catch_discover_tests(ChessEngineTests)
 
 
 
