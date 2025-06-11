@@ -5,7 +5,7 @@
 Queen::Queen(Color color) : Piece(color) {}
 
 
-PieceType Queen::getType() const 
+PieceType Queen::getType() 
 {
     return PieceType::Queen;
 }

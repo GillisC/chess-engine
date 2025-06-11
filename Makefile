@@ -17,6 +17,9 @@ build:
 main:
 	@cd ./build && ./ChessEngine 
 
+test: build
+	@cd ./build && ctest --output-on-failure
+
 clean:
 	@rm -rf ./build
 

@@ -3,7 +3,8 @@
 
 Rook::Rook(Color color) : Piece(color) {}
 
-PieceType Rook::getType() const {
+PieceType Rook::getType() 
+{
     return PieceType::Rook;
 }
 
@@ -16,9 +17,9 @@ const sf::Texture &Rook::getTexture(const TextureManager &manager) const
     return manager.get("black_rook");
 }
 
-std::vector<BoardPosition> Rook::getValidMoves(ChessBoard &board, const BoardPosition &pos) 
+std::vector<Move> Rook::getValidMoves(ChessBoard &board, const BoardPosition &pos) 
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
 
     rookTravel(board, pos, -1, 0, validMoves);
     rookTravel(board, pos, 0, -1, validMoves);
@@ -28,7 +29,7 @@ std::vector<BoardPosition> Rook::getValidMoves(ChessBoard &board, const BoardPos
     return validMoves;
 }
 
-void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<BoardPosition> &moveVec) 
+void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<Move> &moveVec) 
 {
     for (int i = 1; i < 8; i++) 
     {
@@ -38,7 +39,8 @@ void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir,
         {
             if (!(board.isPiece(offsetPos))) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove = {startPos, offsetPos};
+                moveVec.push_back(validMove);
             } else if (board.at(offsetPos)->getColor() ==
                     board.at(startPos)->getColor()) 
             {
@@ -46,7 +48,8 @@ void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir,
             } else if (board.at(offsetPos)->getColor() !=
                     board.at(startPos)->getColor()) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove = {startPos, offsetPos};
+                moveVec.push_back(validMove);
                 break;
             }
         } else

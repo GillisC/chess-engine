@@ -5,7 +5,8 @@
 Pawn::Pawn(Color color) : Piece(color) {}
 
 
-PieceType Pawn::getType() const {
+PieceType Pawn::getType() 
+{
     return PieceType::Pawn;
 }
 
@@ -18,9 +19,9 @@ const sf::Texture& Pawn::getTexture(const TextureManager& manager) const
     return manager.get("black_pawn");
 }
 
-std::vector<BoardPosition> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& pos)
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
     auto piece = board.at(pos);
     int xCord = pos.x();
     int yCord = pos.y();
@@ -30,43 +31,51 @@ std::vector<BoardPosition> Pawn::getValidMoves(ChessBoard& board, const BoardPos
         if (board.isInBounds({xCord, yCord - 1}) &&
             !board.isPiece({xCord, yCord - 1})) 
         {
-            validMoves.push_back({xCord, yCord - 1});
+            Move validMove = {pos, {xCord, yCord - 1}};
+            validMoves.push_back(validMove);
         }
 
         if (board.isInBounds({xCord, yCord - 2}) && 
             piece->getTimesMoved() == 0 && 
             !board.isPiece({xCord, yCord - 2})) 
         {
-            validMoves.push_back({xCord, yCord - 2});
+            Move validMove = {pos, {xCord, yCord - 2}};
+            validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord - 1, yCord - 1}) &&
             board.isBlack({xCord - 1, yCord - 1}))
         {
-            validMoves.push_back({xCord - 1, yCord - 1});
+            Move validMove = {pos, {xCord - 1, yCord - 1}};
+            validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord + 1, yCord - 1}) &&
             board.isBlack({xCord + 1, yCord - 1})) 
         {
-            validMoves.push_back({xCord + 1, yCord - 1});
+            Move validMove = {pos, {xCord + 1, yCord - 1}};
+            validMoves.push_back(validMove);
         }
     }
     else if (piece->getColor() == Color::Black)
     {
         if (board.isInBounds({xCord, yCord + 1})&& !board.isPiece({xCord, yCord + 1}))
         {
-            validMoves.push_back({xCord, yCord + 1});
+            Move validMove = {pos, {xCord, yCord + 1}};
+            validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord, yCord + 2}) && (piece->getTimesMoved() == 0))
         {
-            validMoves.push_back({xCord, yCord + 2});
+            Move validMove = {pos, {xCord, yCord + 2}};
+            validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord - 1, yCord + 1}) && board.isWhite({xCord - 1, yCord + 1})) 
         {
-            validMoves.push_back({xCord - 1, yCord + 1});
+            Move validMove = {pos, {xCord - 1, yCord + 1}};
+            validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord + 1, yCord + 1}) && board.isWhite({xCord + 1, yCord + 1}))
         {
-            validMoves.push_back({xCord + 1, yCord + 1});
+            Move validMove = {pos, {xCord + 1, yCord + 1}};
+            validMoves.push_back(validMove);
         }
     }
 

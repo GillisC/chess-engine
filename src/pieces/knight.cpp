@@ -4,7 +4,8 @@
 
 Knight::Knight(Color color) : Piece(color) {}
 
-PieceType Knight::getType() const {
+PieceType Knight::getType() 
+{
     return PieceType::Knight;
 }
 
@@ -18,9 +19,9 @@ const sf::Texture& Knight::getTexture(const TextureManager& manager) const
 }
 
 
-std::vector<BoardPosition> Knight::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+std::vector<Move> Knight::getValidMoves(ChessBoard& board, const BoardPosition& pos)
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
     
     int x = pos.x();
     int y = pos.y();
@@ -43,11 +44,13 @@ std::vector<BoardPosition> Knight::getValidMoves(ChessBoard& board, const BoardP
     {
         if (board.isInBounds(offset) && !board.isPiece(offset))
         {
-            validMoves.push_back(offset);
+            Move validMove = {pos, offset}; 
+            validMoves.push_back(validMove);
         }
         else if (board.isInBounds(offset) && board.at(pos)->getColor() != board.at(offset)->getColor())
         {
-            validMoves.push_back(offset);
+            Move validMove = {pos, offset};
+            validMoves.push_back(validMove);
         }
     }
 

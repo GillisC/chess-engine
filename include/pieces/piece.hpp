@@ -6,6 +6,7 @@
 
 #include "texture_manager.hpp"
 #include "board_position.hpp"
+#include "move.hpp"
 
 class ChessBoard;
 
@@ -23,9 +24,9 @@ public:
     unsigned int getTimesMoved() const { return _moved; }
     void incrementMoved() { _moved++; }
 
-    virtual PieceType getType() const = 0;
+    virtual PieceType getType() = 0;
     virtual const sf::Texture& getTexture(const TextureManager& manager) const = 0;
 
-    virtual std::vector<BoardPosition> getValidMoves(ChessBoard& board, const BoardPosition& pos) = 0;
+    virtual std::vector<Move> getValidMoves(ChessBoard& board, const BoardPosition& pos) = 0;
 
 };

@@ -3,7 +3,8 @@
 
 Bishop::Bishop(Color color) : Piece(color) {}
 
-PieceType Bishop::getType() const {
+PieceType Bishop::getType() 
+{
     return PieceType::Bishop;
 }
 
@@ -16,9 +17,9 @@ const sf::Texture& Bishop::getTexture(const TextureManager& manager) const
     return manager.get("black_bishop");
 }
 
-std::vector<BoardPosition> Bishop::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+std::vector<Move> Bishop::getValidMoves(ChessBoard& board, const BoardPosition& pos)
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
 
     bishopTravel(board, pos, -1, -1, validMoves);
     bishopTravel(board, pos, 1, -1, validMoves);
@@ -29,7 +30,7 @@ std::vector<BoardPosition> Bishop::getValidMoves(ChessBoard& board, const BoardP
 }
 
 
-void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<BoardPosition> &moveVec) 
+void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<Move> &moveVec) 
 {
     for (int i = 1; i < 8; i++) 
     {
@@ -39,7 +40,8 @@ void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int x
         {
             if (!(board.isPiece(offsetPos))) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove = {startPos, offsetPos};
+                moveVec.push_back(validMove);
             } else if (board.at(offsetPos)->getColor() ==
                     board.at(startPos)->getColor()) 
             {
@@ -47,7 +49,8 @@ void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int x
             } else if (board.at(offsetPos)->getColor() !=
                     board.at(startPos)->getColor()) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove = {startPos, offsetPos};
+                moveVec.push_back(validMove);
                 break;
             }
         } else

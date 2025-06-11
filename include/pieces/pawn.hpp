@@ -6,7 +6,7 @@ class Pawn : public Piece
 {
 public:
     Pawn(Color color);
-    PieceType getType() const override;
+    PieceType getType() override;
     const sf::Texture& getTexture(const TextureManager& manager) const override;    
-    std::vector<BoardPosition> getValidMoves(ChessBoard& board, const BoardPosition& pos) override;
+    std::vector<Move> getValidMoves(ChessBoard& board, const BoardPosition& pos) override;
 };
