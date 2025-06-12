@@ -19,9 +19,9 @@ const sf::Texture& Queen::getTexture(const TextureManager& manager) const
     return manager.get("black_queen");
 }
 
-std::vector<BoardPosition> Queen::getValidMoves(ChessBoard& board, const BoardPosition& pos)
+std::vector<Move> Queen::getValidMoves(ChessBoard& board, const BoardPosition& pos)
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
 
     // Straight
     queenTravel(board, pos, -1, 0, validMoves);
@@ -38,7 +38,7 @@ std::vector<BoardPosition> Queen::getValidMoves(ChessBoard& board, const BoardPo
 }
 
 
-void Queen::queenTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<BoardPosition> &moveVec) 
+void Queen::queenTravel(ChessBoard &board, const BoardPosition startPos, int xDir, int yDir, std::vector<Move> &moveVec) 
 {
     for (int i = 1; i < 8; i++) 
     {
@@ -48,7 +48,8 @@ void Queen::queenTravel(ChessBoard &board, const BoardPosition startPos, int xDi
         {
             if (!(board.isPiece(offsetPos))) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove(startPos, offsetPos);
+                moveVec.push_back(validMove);
             } else if (board.at(offsetPos)->getColor() ==
                     board.at(startPos)->getColor()) 
             {
@@ -56,7 +57,8 @@ void Queen::queenTravel(ChessBoard &board, const BoardPosition startPos, int xDi
             } else if (board.at(offsetPos)->getColor() !=
                     board.at(startPos)->getColor()) 
             {
-                moveVec.push_back(offsetPos);
+                Move validMove(startPos, offsetPos);
+                moveVec.push_back(validMove);
                 break;
             }
         } else

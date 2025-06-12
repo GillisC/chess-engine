@@ -110,8 +110,8 @@ void ChessView::render(sf::RenderWindow& window)
         sf::CircleShape indicatorCircle(square_side / 4.0f);
         for (auto move : validMoves)
         {
-            int squareX = start_pos_x + square_side * move.x();
-            int squareY = start_pos_y + square_side * move.y();
+            int squareX = start_pos_x + square_side * move.to.x();
+            int squareY = start_pos_y + square_side * move.to.y();
 
             sf::FloatRect indicatorBounds = indicatorCircle.getLocalBounds();
             indicatorCircle.setOrigin(

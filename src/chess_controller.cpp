@@ -49,11 +49,21 @@ void ChessController::handleEvent(sf::Event& event)
                 {
                     // If the square pressed is a valid move for the selected piece, move the piece there
                     auto currentValidMoves = _model.getMoves(_uiState.selectedPiece.value());
-                    auto selectedSquare = BoardPosition({xCord, yCord});
-                    if (std::find(currentValidMoves.begin(), currentValidMoves.end(), selectedSquare) != currentValidMoves.end())
+                    const auto selectedSquare = BoardPosition({xCord, yCord});
+
+                    // Get the Move object that corresponds to the pressed valid square
+                    auto it = std::find_if(
+                            currentValidMoves.begin(),
+                            currentValidMoves.end(),
+                            [&selectedSquare](const Move& m) {
+                            return m.to == selectedSquare;
+                            }
+                            );
+
+                    if (it != currentValidMoves.end())
                     {
-                        _model.atBoardPosition(_uiState.selectedPiece.value())->incrementMoved();
-                        _model.movePiece(_uiState.selectedPiece.value(), selectedSquare);
+                        const Move& move = *it;
+                        _model.executeMove(move);
                     }
                 }
             }

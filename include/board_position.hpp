@@ -24,7 +24,7 @@ public:
     int x() const { return _x; }
     int y() const { return _y; }
     
-    bool operator==(const BoardPosition& other)
+    bool operator==(const BoardPosition& other) const
     {
         return (_x == other.x() && _y == other.y());
     }

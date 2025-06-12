@@ -30,6 +30,7 @@ public:
     void move(BoardPosition startPos, BoardPosition endPos);
     void place(BoardPosition targetPos, std::shared_ptr<Piece> piece);
     void place(PieceType pieceType, Color color, const std::string& pos);
+    void place(PieceType pieceType, Color color, const BoardPosition& pos);
     std::shared_ptr<Piece> at(const BoardPosition& pos);
     bool isPiece(const BoardPosition& pos);
     bool isWhite(const BoardPosition& pos);

@@ -72,6 +72,10 @@ void ChessBoard::place(PieceType pieceType, Color color, const std::string& pos)
     place(convertNotation(pos), createPiece(pieceType, color));
 }
 
+void ChessBoard::place(PieceType pieceType, Color color, const BoardPosition& pos)
+{
+    place(pos, createPiece(pieceType, color));
+}
 
 BoardPosition ChessBoard::convertNotation(const std::string& pos)
 {

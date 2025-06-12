@@ -18,15 +18,36 @@ bool ChessModel::isPiece(const BoardPosition& pos)
 
 
 
-std::vector<BoardPosition> ChessModel::getMoves(const BoardPosition& pos)
+std::vector<Move> ChessModel::getMoves(const BoardPosition& pos)
 {
-    std::vector<BoardPosition> validMoves = {};
+    std::vector<Move> validMoves = {};
 
     if (!isPiece(pos)) return validMoves;
     
     return atBoardPosition(pos)->getValidMoves(_board, pos);
 }
 
+void ChessModel::executeMove(const Move m)
+{
+    Color c = _board.at(m.from)->getColor();
+    _board.at(m.from)->incrementMoved();
+    _board.move(m.from, m.to);
+
+    // Move the secondary piece if provided
+    if (m.secondaryFrom.has_value() && m.secondaryTo.has_value())
+    {
+        _board.at(m.secondaryFrom.value())->incrementMoved();
+        _board.move(m.secondaryFrom.value(), m.secondaryTo.value());
+    }
+
+    // Promote if provided
+    if (m.promotion.has_value())
+    {
+        _board.place(m.promotion.value(), c, m.to);
+    }
+
+    toggleTurn();
+}
 
 void ChessModel::movePiece(const BoardPosition& from, const BoardPosition& to)
 {

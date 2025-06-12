@@ -35,6 +35,6 @@ TEST_CASE("Successful castling", "[king][rook][movement]")
 
     auto king = board.at({4, 7});
     if (!king) std::cout << "king is null" << std::endl;
-    std::vector<BoardPosition> moves = king->getValidMoves(board, {4, 7});
+    std::vector<Move> moves = king->getValidMoves(board, {4, 7});
     REQUIRE(moves.size() == 7);
 }

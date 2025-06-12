@@ -2,6 +2,7 @@
 
 
 #include "board.hpp"
+#include "move.hpp"
 
 class ChessModel
 {
@@ -19,7 +20,9 @@ public:
     bool isPiece(const BoardPosition& pos);
 
     // Given a board position, returns the possible moves available
-    std::vector<BoardPosition> getMoves(const BoardPosition& pos);
+    std::vector<Move> getMoves(const BoardPosition& pos);
+
+    void executeMove(const Move m);
 
     void movePiece(const BoardPosition& from, const BoardPosition& to);
     
