@@ -8,6 +8,7 @@ class ChessModel
 {
     ChessBoard _board;
     Color _currentTurn = Color::White;
+    
 
 public:
     ChessModel();
@@ -23,16 +24,14 @@ public:
     std::vector<Move> getMoves(const BoardPosition& pos);
 
     void executeMove(const Move m);
-
-    // Given a move checks if enpassant is available,
-    // If so sets the enPassantTarget in the board instance
-    void checkEnPassant(const Move m);
+ 
     void movePiece(const BoardPosition& from, const BoardPosition& to);
     
     bool isWhitePiece(const BoardPosition& pos);
     bool isBlackPiece(const BoardPosition& pos);
 
     Color getTurn();
+
 private:
     void toggleTurn();
 

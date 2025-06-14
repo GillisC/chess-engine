@@ -33,6 +33,7 @@ public:
     void place(PieceType pieceType, Color color, const std::string& pos);
     void place(PieceType pieceType, Color color, const BoardPosition& pos);
     std::shared_ptr<Piece> at(const BoardPosition& pos);
+    std::shared_ptr<Piece> at(std::string_view pos);
     bool isPiece(const BoardPosition& pos);
     bool isWhite(const BoardPosition& pos);
     bool isBlack(const BoardPosition& pos);
@@ -47,8 +48,13 @@ public:
     bool isEnPassantTarget(const BoardPosition& pos);
     void remove(const BoardPosition& pos);
     void clear();
+    static BoardPosition convertNotation(const std::string& pos);
     void print();
 
+    void executeMove(const Move m);
+    void checkEnPassant(const Move m);
+    // Returns true if king with the provided color is in check
+    bool isKingInCheck(Color color);
     
     struct BoardIterator
     {
@@ -60,6 +66,7 @@ public:
         bool operator!=(const BoardIterator& other) const { return pos != other.pos; }
         BoardIterator& operator++() { pos++; return *this; }
         std::shared_ptr<Piece>& operator*() { return board->_board_data[pos / 8][pos % 8]; }
+        BoardPosition position() { return {pos % 8, pos / 8}; }
     };
 
     BoardIterator begin() { return BoardIterator(this, 0); }
@@ -67,6 +74,6 @@ public:
 
 private:
     std::shared_ptr<Piece> createPiece(PieceType pieceType, Color color);
-    static BoardPosition convertNotation(const std::string& pos);
+    BoardPosition findKing(Color kingColor);
 };
 
