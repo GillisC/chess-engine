@@ -1,5 +1,6 @@
 #include "pieces/pawn.hpp"
 #include "board.hpp"
+#include <optional>
 
 
 Pawn::Pawn(Color color) : Piece(color) {}
@@ -34,7 +35,7 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             Move validMove = {pos, {xCord, yCord - 1}};
             validMoves.push_back(validMove);
         }
-
+        // Move two steps forward
         if (board.isInBounds({xCord, yCord - 2}) && 
             piece->getTimesMoved() == 0 && 
             !board.isPiece({xCord, yCord - 2})) 
@@ -54,6 +55,20 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             Move validMove = {pos, {xCord + 1, yCord - 1}};
             validMoves.push_back(validMove);
         }
+        // White en passant left
+        if (board.isInBounds({xCord - 1, yCord - 1}) &&
+            board.isEnPassantTarget({xCord - 1, yCord - 1}))
+        {
+            Move validMove = {pos, {xCord - 1, yCord - 1}, BoardPosition(xCord - 1, yCord), std::nullopt};
+            validMoves.push_back(validMove);
+        }
+        // White en passant right
+        if (board.isInBounds({xCord + 1, yCord - 1}) &&
+            board.isEnPassantTarget({xCord + 1, yCord - 1}))
+        {
+            Move validMove = {pos, {xCord + 1, yCord - 1}, BoardPosition(xCord + 1, yCord), std::nullopt};
+            validMoves.push_back(validMove);
+        }
     }
     else if (piece->getColor() == Color::Black)
     {
@@ -62,6 +77,7 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             Move validMove = {pos, {xCord, yCord + 1}};
             validMoves.push_back(validMove);
         }
+        // Move two steps forward
         if (board.isInBounds({xCord, yCord + 2}) && (piece->getTimesMoved() == 0))
         {
             Move validMove = {pos, {xCord, yCord + 2}};
@@ -75,6 +91,20 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
         if (board.isInBounds({xCord + 1, yCord + 1}) && board.isWhite({xCord + 1, yCord + 1}))
         {
             Move validMove = {pos, {xCord + 1, yCord + 1}};
+            validMoves.push_back(validMove);
+        }
+        // Black en passant left
+        if (board.isInBounds({xCord - 1, yCord + 1}) &&
+            board.isEnPassantTarget({xCord - 1, yCord + 1}))
+        {
+            Move validMove = {pos, {xCord - 1, yCord + 1}, BoardPosition(xCord - 1, yCord), std::nullopt};
+            validMoves.push_back(validMove);
+        }
+        // Black en passant right
+        if (board.isInBounds({xCord + 1, yCord + 1}) &&
+            board.isEnPassantTarget({xCord + 1, yCord + 1}))
+        {
+            Move validMove = {pos, {xCord + 1, yCord + 1}, BoardPosition(xCord + 1, yCord), std::nullopt};
             validMoves.push_back(validMove);
         }
     }

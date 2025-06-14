@@ -24,6 +24,7 @@ class Piece;
 class ChessBoard
 {
     std::vector<std::vector<std::shared_ptr<Piece>>> _board_data;
+    std::optional<BoardPosition> _enPassantTarget;
 
 public:   
     ChessBoard();
@@ -35,7 +36,16 @@ public:
     bool isPiece(const BoardPosition& pos);
     bool isWhite(const BoardPosition& pos);
     bool isBlack(const BoardPosition& pos);
+
+    // Given a board and the color of a player
+    // Returns true if there is a piece at the position and is of the opposite color
+    bool isOtherPiece(const BoardPosition& pos, Color color);
     bool isInBounds(const BoardPosition& pos);
+    void setEnPassantTarget(const BoardPosition& pos);
+    
+    std::optional<BoardPosition> getEnPassantTarget();
+    bool isEnPassantTarget(const BoardPosition& pos);
+    void remove(const BoardPosition& pos);
     void clear();
     void print();
 

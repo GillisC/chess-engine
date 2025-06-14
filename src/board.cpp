@@ -140,7 +140,35 @@ bool ChessBoard::isInBounds(const BoardPosition& pos)
 {
     return (pos.x() >= 0 && pos.x() < 8 && pos.y() >= 0 && pos.y() < 8);
 }
- 
+
+void ChessBoard::setEnPassantTarget(const BoardPosition& pos)
+{
+   _enPassantTarget = pos;
+}
+
+std::optional<BoardPosition> ChessBoard::getEnPassantTarget()
+{
+    return _enPassantTarget;
+}
+
+bool ChessBoard::isEnPassantTarget(const BoardPosition& pos)
+{
+    return _enPassantTarget.has_value() && _enPassantTarget.value() == pos;
+}
+
+void ChessBoard::remove(const BoardPosition& pos)
+{
+    if (isInBounds(pos)) 
+    {
+        _board_data[pos.y()][pos.x()] = nullptr;
+    }
+}
+
+bool ChessBoard::isOtherPiece(const BoardPosition& pos, Color color)
+{
+    return isPiece(pos) && at(pos)->getColor() != color;
+}
+
 void ChessBoard::clear()
 {
     _board_data = std::vector<std::vector<std::shared_ptr<Piece>>>(8, std::vector<std::shared_ptr<Piece>>(8));

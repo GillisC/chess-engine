@@ -24,6 +24,9 @@ public:
 
     void executeMove(const Move m);
 
+    // Given a move checks if enpassant is available,
+    // If so sets the enPassantTarget in the board instance
+    void checkEnPassant(const Move m);
     void movePiece(const BoardPosition& from, const BoardPosition& to);
     
     bool isWhitePiece(const BoardPosition& pos);
