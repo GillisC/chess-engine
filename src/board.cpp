@@ -317,12 +317,13 @@ void ChessBoard::undoMove(const Move m)
     {
         place(m.secondaryFrom.value(), m.secondaryPiece.value());
     }
-
-    // Promote if provided
-    // if (m.promotion.has_value())
-    // {
-    //     place(m.promotion.value(), c, m.to);
-    // }
+    
+    // Undo the promotion
+    if (m.promotion.has_value())
+    {
+        remove(m.to);
+        place(m.from, m.primaryPiece);
+    }
 
 }
 void ChessBoard::checkEnPassant(const Move m)

@@ -31,8 +31,23 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
         if (board.isInBounds({xCord, yCord - 1}) &&
             !board.isPiece({xCord, yCord - 1})) 
         {
-            Move validMove(pos, {xCord, yCord - 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord, yCord - 1};
+            if (yCord - 1 == 0)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else 
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         // Move two steps forward
         if (board.isInBounds({xCord, yCord - 2}) && 
@@ -74,8 +89,23 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
     {
         if (board.isInBounds({xCord, yCord + 1})&& !board.isPiece({xCord, yCord + 1}))
         {
-            Move validMove(pos, {xCord, yCord + 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord, yCord + 1};
+            if (yCord + 1 == 7)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         // Move two steps forward
         if (board.isInBounds({xCord, yCord + 2}) && (piece->getTimesMoved() == 0))
