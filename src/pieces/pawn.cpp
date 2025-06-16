@@ -1,6 +1,5 @@
 #include "pieces/pawn.hpp"
 #include "board.hpp"
-#include <optional>
 
 
 Pawn::Pawn(Color color) : Piece(color) {}
@@ -32,7 +31,7 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
         if (board.isInBounds({xCord, yCord - 1}) &&
             !board.isPiece({xCord, yCord - 1})) 
         {
-            Move validMove = {pos, {xCord, yCord - 1}};
+            Move validMove(pos, {xCord, yCord - 1}, board);
             validMoves.push_back(validMove);
         }
         // Move two steps forward
@@ -40,33 +39,34 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             piece->getTimesMoved() == 0 && 
             !board.isPiece({xCord, yCord - 2})) 
         {
-            Move validMove = {pos, {xCord, yCord - 2}};
+            std::cout << "what" << std::endl;
+            Move validMove(pos, {xCord, yCord - 2}, board);
             validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord - 1, yCord - 1}) &&
             board.isBlack({xCord - 1, yCord - 1}))
         {
-            Move validMove = {pos, {xCord - 1, yCord - 1}};
+            Move validMove(pos, {xCord - 1, yCord - 1}, board);
             validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord + 1, yCord - 1}) &&
             board.isBlack({xCord + 1, yCord - 1})) 
         {
-            Move validMove = {pos, {xCord + 1, yCord - 1}};
+            Move validMove(pos, {xCord + 1, yCord - 1}, board);
             validMoves.push_back(validMove);
         }
         // White en passant left
         if (board.isInBounds({xCord - 1, yCord - 1}) &&
             board.isEnPassantTarget({xCord - 1, yCord - 1}))
         {
-            Move validMove = {pos, {xCord - 1, yCord - 1}, BoardPosition(xCord - 1, yCord), std::nullopt};
+            Move validMove(pos, {xCord - 1, yCord - 1}, board, BoardPosition(xCord - 1, yCord), std::nullopt);
             validMoves.push_back(validMove);
         }
         // White en passant right
         if (board.isInBounds({xCord + 1, yCord - 1}) &&
             board.isEnPassantTarget({xCord + 1, yCord - 1}))
         {
-            Move validMove = {pos, {xCord + 1, yCord - 1}, BoardPosition(xCord + 1, yCord), std::nullopt};
+            Move validMove(pos, {xCord + 1, yCord - 1}, board, BoardPosition(xCord + 1, yCord), std::nullopt);
             validMoves.push_back(validMove);
         }
     }
@@ -74,37 +74,37 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
     {
         if (board.isInBounds({xCord, yCord + 1})&& !board.isPiece({xCord, yCord + 1}))
         {
-            Move validMove = {pos, {xCord, yCord + 1}};
+            Move validMove(pos, {xCord, yCord + 1}, board);
             validMoves.push_back(validMove);
         }
         // Move two steps forward
         if (board.isInBounds({xCord, yCord + 2}) && (piece->getTimesMoved() == 0))
         {
-            Move validMove = {pos, {xCord, yCord + 2}};
+            Move validMove(pos, {xCord, yCord + 2}, board);
             validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord - 1, yCord + 1}) && board.isWhite({xCord - 1, yCord + 1})) 
         {
-            Move validMove = {pos, {xCord - 1, yCord + 1}};
+            Move validMove(pos, {xCord - 1, yCord + 1}, board);
             validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord + 1, yCord + 1}) && board.isWhite({xCord + 1, yCord + 1}))
         {
-            Move validMove = {pos, {xCord + 1, yCord + 1}};
+            Move validMove(pos, {xCord + 1, yCord + 1}, board);
             validMoves.push_back(validMove);
         }
         // Black en passant left
         if (board.isInBounds({xCord - 1, yCord + 1}) &&
             board.isEnPassantTarget({xCord - 1, yCord + 1}))
         {
-            Move validMove = {pos, {xCord - 1, yCord + 1}, BoardPosition(xCord - 1, yCord), std::nullopt};
+            Move validMove(pos, {xCord - 1, yCord + 1}, board, BoardPosition(xCord - 1, yCord), std::nullopt);
             validMoves.push_back(validMove);
         }
         // Black en passant right
         if (board.isInBounds({xCord + 1, yCord + 1}) &&
             board.isEnPassantTarget({xCord + 1, yCord + 1}))
         {
-            Move validMove = {pos, {xCord + 1, yCord + 1}, BoardPosition(xCord + 1, yCord), std::nullopt};
+            Move validMove(pos, {xCord + 1, yCord + 1}, board, BoardPosition(xCord + 1, yCord), std::nullopt);
             validMoves.push_back(validMove);
         }
     }

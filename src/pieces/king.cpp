@@ -30,12 +30,12 @@ std::vector<Move> King::getValidMoves(ChessBoard& board, const BoardPosition& po
             BoardPosition offsetPos = {pos.x() + i, pos.y() + j};
             if (board.isInBounds(offsetPos) && !board.isPiece(offsetPos))
             {
-                Move validMove = {pos, offsetPos};
+                Move validMove = {pos, offsetPos, board};
                 validMoves.push_back(validMove);
             }
             else if (board.isInBounds(offsetPos) && board.at(pos)->getColor() != board.at(offsetPos)->getColor())
             {
-                Move validMove = {pos, offsetPos};
+                Move validMove = {pos, offsetPos, board};
                 validMoves.push_back(validMove);
             }
         }
@@ -52,7 +52,7 @@ std::vector<Move> King::getValidMoves(ChessBoard& board, const BoardPosition& po
         {
             if (i == 0 && board.isPiece({i ,7}) && board.at({i, 7})->getTimesMoved() == 0)
             {
-                Move validMove(pos, {2, 7}, BoardPosition(0, 7), BoardPosition(3, 7));
+                Move validMove(pos, {2, 7}, board, BoardPosition(0, 7), BoardPosition(3, 7));
                 validMoves.push_back(validMove);
             }
             else if (board.at({i, 7})) // If there is a piece in between
@@ -66,7 +66,7 @@ std::vector<Move> King::getValidMoves(ChessBoard& board, const BoardPosition& po
         {
             if (i == 7 && board.isPiece({i ,7}) && board.at({i, 7})->getTimesMoved() == 0)
             {
-                Move validMove(pos, {6, 7}, BoardPosition(7, 7), BoardPosition(5, 7));
+                Move validMove(pos, {6, 7}, board, BoardPosition(7, 7), BoardPosition(5, 7));
                 validMoves.push_back(validMove);
             }
             else if (board.at({i, 7})) // If there is a piece in between
@@ -81,7 +81,7 @@ std::vector<Move> King::getValidMoves(ChessBoard& board, const BoardPosition& po
         {
             if (i == 0 && board.isPiece({i ,0}) && board.at({i, 0})->getTimesMoved() == 0)
             {
-                Move validMove(pos, {2, 0}, BoardPosition(0, 0), BoardPosition(3, 0));
+                Move validMove(pos, {2, 0}, board, BoardPosition(0, 0), BoardPosition(3, 0));
                 validMoves.push_back(validMove);
             }
             else if (board.at({i, 0})) // If there is a piece in between
@@ -95,7 +95,7 @@ std::vector<Move> King::getValidMoves(ChessBoard& board, const BoardPosition& po
         {
             if (i == 7 && board.isPiece({i ,0}) && board.at({i, 0})->getTimesMoved() == 0)
             {
-                Move validMove(pos, {6, 0}, BoardPosition(7, 0), BoardPosition(5, 0));
+                Move validMove(pos, {6, 0}, board, BoardPosition(7, 0), BoardPosition(5, 0));
                 validMoves.push_back(validMove);
             }
             else if (board.at({i, 0})) // If there is a piece in between

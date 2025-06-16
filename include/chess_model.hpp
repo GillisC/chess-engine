@@ -6,12 +6,14 @@
 
 class ChessModel
 {
-    ChessBoard _board;
+    ChessBoard _owned_board;
+    ChessBoard& _board;
     Color _currentTurn = Color::White;
     
 
 public:
     ChessModel();
+    ChessModel(ChessBoard& board);
 
     // Returns the piece at the provided BoardPosition
     // If there isn't a piece present it will return nullptr

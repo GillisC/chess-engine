@@ -4,6 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <optional>
 
 #include "pieces/piece.hpp"
 #include "pieces/pawn.hpp"
@@ -52,6 +53,7 @@ public:
     void print();
 
     void executeMove(const Move m);
+    void undoMove(const Move m);
     void checkEnPassant(const Move m);
     // Returns true if king with the provided color is in check
     bool isKingInCheck(Color color);

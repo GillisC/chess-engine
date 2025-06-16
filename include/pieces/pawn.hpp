@@ -1,6 +1,7 @@
 #pragma once
 
 #include "piece.hpp"
+#include "move.hpp"
 
 class Pawn : public Piece
 {

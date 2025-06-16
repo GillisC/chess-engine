@@ -296,6 +296,35 @@ void ChessBoard::executeMove(const Move m)
     }
 }
 
+void ChessBoard::undoMove(const Move m)
+{
+    Color c = at(m.to)->getColor();
+    move(m.to, m.from);
+    at(m.from)->decrementMoved();
+    
+    if (m.captured.has_value())
+    {
+        place(m.to, m.captured.value());
+    }
+    // Move the secondary piece back if provided
+    if (m.secondaryFrom.has_value() && m.secondaryTo.has_value())
+    {
+        at(m.secondaryFrom.value())->decrementMoved();
+        move(m.secondaryTo.value(), m.secondaryFrom.value());
+    }
+    // En passant execution bring back the piece that been en passant'ed
+    if (m.secondaryFrom.has_value() && !m.secondaryTo.has_value())
+    {
+        place(m.secondaryFrom.value(), m.secondaryPiece.value());
+    }
+
+    // Promote if provided
+    // if (m.promotion.has_value())
+    // {
+    //     place(m.promotion.value(), c, m.to);
+    // }
+
+}
 void ChessBoard::checkEnPassant(const Move m)
 {
     auto piece_ptr = at(m.to);

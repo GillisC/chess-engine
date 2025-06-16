@@ -1,30 +1,40 @@
 #include "chess_model.hpp"
 
 ChessModel::ChessModel() : 
-    _board()
-    {}
+    _owned_board(), _board(_owned_board) {}
 
+ChessModel::ChessModel(ChessBoard& board) :
+    _board(board) {}
 
 std::shared_ptr<Piece> ChessModel::atBoardPosition(const BoardPosition& pos)
 {
     return _board.at(pos);
 }
 
-
 bool ChessModel::isPiece(const BoardPosition& pos)
 {
     return _board.at(pos) != nullptr;
 }
 
-
-
 std::vector<Move> ChessModel::getMoves(const BoardPosition& pos)
 {
-    std::vector<Move> validMoves = {};
+    if (!_board.isPiece(pos))
+    {
+        return {};
+    }
+    std::vector<Move> possibleMoves = atBoardPosition(pos)->getValidMoves(_board, pos);
 
-    if (!isPiece(pos)) return validMoves;
-    
-    return atBoardPosition(pos)->getValidMoves(_board, pos);
+    std::vector<Move> validMoves = {};
+    auto current = _currentTurn;
+
+    // Filter out moves which lead to the king in check
+    for (auto& move : possibleMoves)
+    {
+        _board.executeMove(move);
+        if (!_board.isKingInCheck(current)) validMoves.push_back(move);
+        _board.undoMove(move);
+    }
+    return validMoves;
 }
 
 void ChessModel::executeMove(const Move m)

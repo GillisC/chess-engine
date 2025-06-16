@@ -44,12 +44,12 @@ std::vector<Move> Knight::getValidMoves(ChessBoard& board, const BoardPosition& 
     {
         if (board.isInBounds(offset) && !board.isPiece(offset))
         {
-            Move validMove = {pos, offset}; 
+            Move validMove(pos, offset, board); 
             validMoves.push_back(validMove);
         }
         else if (board.isInBounds(offset) && board.at(pos)->getColor() != board.at(offset)->getColor())
         {
-            Move validMove = {pos, offset};
+            Move validMove(pos, offset, board);
             validMoves.push_back(validMove);
         }
     }

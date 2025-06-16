@@ -40,7 +40,7 @@ void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int x
         {
             if (!(board.isPiece(offsetPos))) 
             {
-                Move validMove = {startPos, offsetPos};
+                Move validMove = {startPos, offsetPos, board};
                 moveVec.push_back(validMove);
             } else if (board.at(offsetPos)->getColor() ==
                     board.at(startPos)->getColor()) 
@@ -49,7 +49,7 @@ void Bishop::bishopTravel(ChessBoard &board, const BoardPosition startPos, int x
             } else if (board.at(offsetPos)->getColor() !=
                     board.at(startPos)->getColor()) 
             {
-                Move validMove = {startPos, offsetPos};
+                Move validMove = {startPos, offsetPos, board};
                 moveVec.push_back(validMove);
                 break;
             }

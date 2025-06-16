@@ -39,7 +39,7 @@ void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir,
         {
             if (!(board.isPiece(offsetPos))) 
             {
-                Move validMove = {startPos, offsetPos};
+                Move validMove = {startPos, offsetPos, board};
                 moveVec.push_back(validMove);
             } else if (board.at(offsetPos)->getColor() ==
                     board.at(startPos)->getColor()) 
@@ -48,7 +48,7 @@ void Rook::rookTravel(ChessBoard &board, const BoardPosition startPos, int xDir,
             } else if (board.at(offsetPos)->getColor() !=
                     board.at(startPos)->getColor()) 
             {
-                Move validMove = {startPos, offsetPos};
+                Move validMove = {startPos, offsetPos, board};
                 moveVec.push_back(validMove);
                 break;
             }

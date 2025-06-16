@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch_test_macros.hpp>
 #include "board.hpp"
+#include "chess_model.hpp"
 
 TEST_CASE("Pawn movement", "[pawn][movement]")
 {
@@ -39,21 +40,41 @@ TEST_CASE("Successful castling", "[king][rook][movement]")
     REQUIRE(moves.size() == 7);
 }
 
-TEST_CASE("Check works", "[king][move-generation]")
+TEST_CASE("Undo Moves", "[move]")
 {
     ChessBoard board;
     board.clear();
 
-    board.place(PieceType::King, Color::White, "d6");
-    board.place(PieceType::Rook, Color::Black, "f5");
-    auto piece = board.at("d6");
+    board.place(PieceType::Pawn, Color::White, "b6");
+    Move move(
+        ChessBoard::convertNotation("b6"),
+        ChessBoard::convertNotation("b5"),
+        board
+    );
+    board.executeMove(move);
+    REQUIRE(board.at("b5") != nullptr);
+    REQUIRE(board.at("b6") == nullptr);
 
-    SECTION("Correctly placed")
-    {
-        REQUIRE(piece != nullptr);
-    }
-    SECTION("Has two valid moves")
-    {
-        REQUIRE(piece->getValidMoves(board, ChessBoard::convertNotation("d6")).size() == 5);
-    }
+    board.undoMove(move);
+    REQUIRE(board.at("b5") == nullptr);
+    REQUIRE(board.at("b6") != nullptr);
+    REQUIRE(board.at("b6")->getTimesMoved() == 0);
+}
+
+TEST_CASE("Check works", "[king][move-generation]")
+{
+    ChessBoard board;
+    board.clear();
+    ChessModel model(board);
+
+    board.place(PieceType::King, Color::White, "d6");
+    board.place(PieceType::Rook, Color::Black, "f6");
+    auto piece = board.at("d6");
+    REQUIRE(piece != nullptr);
+    REQUIRE(board.isKingInCheck(Color::White));
+
+    auto validMoves = model.getMoves(ChessBoard::convertNotation("d6"));
+    std::cout << "model valid king moves: " << validMoves.size() << std::endl;
+    REQUIRE(validMoves.size() == 6);
+    // REQUIRE(piece->getValidMoves(board, ChessBoard::convertNotation("d6")).size() == 6);
 }

@@ -6,9 +6,9 @@
 
 #include "texture_manager.hpp"
 #include "board_position.hpp"
-#include "move.hpp"
 
 class ChessBoard;
+class Move;
 
 class Piece
 {
@@ -23,6 +23,7 @@ public:
     Color getColor() const { return _color; }
     unsigned int getTimesMoved() const { return _moved; }
     void incrementMoved() { _moved++; }
+    void decrementMoved() { _moved--; }
 
     virtual PieceType getType() = 0;
     virtual const sf::Texture& getTexture(const TextureManager& manager) const = 0;
