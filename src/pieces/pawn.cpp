@@ -54,7 +54,6 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             piece->getTimesMoved() == 0 && 
             !board.isPiece({xCord, yCord - 2})) 
         {
-            std::cout << "what" << std::endl;
             Move validMove(pos, {xCord, yCord - 2}, board);
             validMoves.push_back(validMove);
         }

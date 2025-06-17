@@ -1,16 +1,19 @@
 #pragma once
 
+#include <map>
 
 #include "board.hpp"
 #include "move.hpp"
+#include "human_controller.hpp"
+#include "engine_controller.hpp"
 
 class ChessModel
 {
     ChessBoard _owned_board;
     ChessBoard& _board;
+    std::map<Color, std::unique_ptr<Controller>> controllers;
     Color _currentTurn = Color::White;
     
-
 public:
     ChessModel();
     ChessModel(ChessBoard& board);
@@ -24,8 +27,10 @@ public:
 
     // Given a board position, returns the possible moves available
     std::vector<Move> getMoves(const BoardPosition& pos);
+    std::vector<Move> getAllLegalMoves(Color color);
 
     void executeMove(const Move m);
+    void startTurn();
  
     void movePiece(const BoardPosition& from, const BoardPosition& to);
     
