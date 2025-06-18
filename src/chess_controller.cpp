@@ -1,4 +1,5 @@
 #include "chess_controller.hpp"
+#include "SFML/System/Vector2.hpp"
 #include "board.hpp"
 
 
@@ -21,6 +22,24 @@ void ChessController::handleEvent(sf::Event& event)
                       << event.mouseButton.x << ", "
                       << "y=" << event.mouseButton.y
                       << std::endl;
+
+            const sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+
+            if (_uiState.promotionMove.has_value())
+            {
+                for (auto& pair : _uiState.promotionSprites) 
+                {
+                    if (pair.first.getGlobalBounds().contains(mousePos))
+                    {
+                        _uiState.promotionMove.value()->promotion = pair.second;
+                        _model.executeMove( *(_uiState.promotionMove.value()) );
+                        _uiState.promotionMove.reset();
+                        _uiState.selectedPiece.reset();
+                        break;
+                    }
+                }
+                return; // Locks the player into choosing promotion type
+            }
 
             // Get the square that was clicked
             unsigned int board_width = Config::WindowWidth * Config::BoardAspectRatio;
@@ -63,6 +82,13 @@ void ChessController::handleEvent(sf::Event& event)
                     if (it != currentValidMoves.end())
                     {
                         const Move& move = *it;
+                        if (move.promotion.has_value())
+                        {
+                            std::cout << "Player chose a promotion move" << std::endl;
+                           // Render the promotion UI and wait for player action
+                           _uiState.promotionMove = std::make_shared<Move>(move);
+                            return;
+                        }
                         _model.executeMove(move);
                     }
                 }

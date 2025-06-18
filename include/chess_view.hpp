@@ -20,4 +20,8 @@ class ChessView
 public:
     ChessView(ChessModel& model, TextureManager& manager, UIState& uiState);
     void render(sf::RenderWindow& window);
+private:
+    void renderPromotionUI(sf::RenderWindow& window);
+    float getBoardSideLength(sf::RenderWindow& window);
+    float getSideMargin(sf::RenderWindow& window);
 };

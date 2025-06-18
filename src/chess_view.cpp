@@ -1,8 +1,12 @@
 #include "chess_view.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
 
 ChessView::ChessView(ChessModel& model, TextureManager& manager, UIState& uiState) :
-    _model(model), _manager(manager), _uiState(uiState) {}
+    _model(model), _manager(manager), _uiState(uiState) 
+{
+    
+}
 
 void ChessView::render(sf::RenderWindow& window)
 {
@@ -126,4 +130,81 @@ void ChessView::render(sf::RenderWindow& window)
 
         }
     }
+    if (_uiState.promotionMove.has_value())
+    {
+        renderPromotionUI(window);
+    }
+}
+
+void ChessView::renderPromotionUI(sf::RenderWindow& window)
+{
+    sf::Texture queenTex, rookTex, bishopTex, knightTex;
+    std::string color; 
+    if (_model.getTurn() == Color::White)
+        color = "white_";
+    else
+        color = "black_";
+
+    queenTex = _manager.get(color + "queen");
+    rookTex = _manager.get(color + "rook");
+    bishopTex = _manager.get(color + "bishop");
+    knightTex = _manager.get(color + "knight");
+
+    sf::Sprite queenSprite(queenTex);
+    sf::Sprite rookSprite(rookTex);
+    sf::Sprite bishopSprite(bishopTex);
+    sf::Sprite knightSprite(knightTex);
+
+    BoardPosition promoteSquare = _uiState.promotionMove.value()->to;
+     
+    auto sizeVec = window.getSize();
+    int width = sizeVec.x;
+    
+    float square_side = (width * Config::BoardAspectRatio) / 8;
+    float boxX = getSideMargin(window) + square_side * promoteSquare.x() + square_side * 0.5;
+    float boxY = getSideMargin(window) + square_side * 2 + square_side * 0.5;
+
+    sf::FloatRect bounds;
+    bounds = queenSprite.getLocalBounds();
+    queenSprite.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+    bounds = rookSprite.getLocalBounds();
+    rookSprite.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+    bounds = bishopSprite.getLocalBounds();
+    bishopSprite.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+    bounds = knightSprite.getLocalBounds();
+    knightSprite.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
+
+    queenSprite.setPosition(boxX, boxY);
+    rookSprite.setPosition(boxX, boxY + square_side);
+    bishopSprite.setPosition(boxX, boxY + (square_side * 2));
+    knightSprite.setPosition(boxX, boxY + (square_side * 3));
+
+    _uiState.promotionSprites.push_back(std::pair(queenSprite, PieceType::Queen));
+    _uiState.promotionSprites.push_back(std::pair(rookSprite, PieceType::Rook));
+    _uiState.promotionSprites.push_back(std::pair(bishopSprite, PieceType::Bishop));
+    _uiState.promotionSprites.push_back(std::pair(knightSprite, PieceType::Knight));
+
+    // Draw a box background
+    sf::RectangleShape box(sf::Vector2f(square_side, square_side * 4));
+    box.setPosition(boxX - square_side * 0.5, boxY - square_side * 0.5);
+    box.setFillColor({210, 210, 210, 200});
+    box.setOutlineColor({31, 31, 31, 255});
+    box.setOutlineThickness(3.f);
+    window.draw(box);
+
+    window.draw(queenSprite);
+    window.draw(rookSprite);
+    window.draw(bishopSprite);
+    window.draw(knightSprite);
+}
+
+float ChessView::getBoardSideLength(sf::RenderWindow& window)
+{
+    return window.getSize().x * Config::BoardAspectRatio;
+}
+
+float ChessView::getSideMargin(sf::RenderWindow& window)
+{
+    auto windowSizeVec = window.getSize();
+    return ( windowSizeVec.x - (window.getSize().x * Config::BoardAspectRatio) ) / 2;
 }
