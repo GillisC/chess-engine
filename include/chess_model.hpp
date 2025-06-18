@@ -39,13 +39,16 @@ public:
 
     Color getTurn();
 
+    // FEN
+    // Exports the current gamestate in the FEN (Forsyth-Edwards Notation) format
+    std::string getFEN();
+
+    // Sets the model game state based on the provided FEN string
+    void loadFEN(const std::string& fenString);
+
 private:
     void toggleTurn();
+    char pieceToSymbol(std::shared_ptr<Piece> p);
+    std::shared_ptr<Piece> symbolToPiece(char sym);
 
-    std::vector<BoardPosition> getPawnMoves(const BoardPosition& pos);
-    std::vector<BoardPosition> getRookMoves(const BoardPosition& pos);
-    std::vector<BoardPosition> getKnightMoves(const BoardPosition& pos);
-    std::vector<BoardPosition> getBishopMoves(const BoardPosition& pos);
-    std::vector<BoardPosition> getKingMoves(const BoardPosition& pos);
-    std::vector<BoardPosition> getQueenMoves(const BoardPosition& pos);
 }; 

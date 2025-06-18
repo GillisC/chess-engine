@@ -1,10 +1,11 @@
 #include "chess_model.hpp"
+#include <utility>
 
 ChessModel::ChessModel() : 
     _owned_board(), _board(_owned_board) 
 {
     controllers[Color::White] = std::make_unique<HumanController>();
-    controllers[Color::Black] = std::make_unique<HumanController>();
+    controllers[Color::Black] = std::make_unique<EngineController>();
 }
 
 ChessModel::ChessModel(ChessBoard& board) :
@@ -98,6 +99,42 @@ Color ChessModel::getTurn()
     return _currentTurn;
 }
 
+std::string ChessModel::getFEN()
+{
+    std::string fen = "";
+    
+    for (int i = 0; i < 8; i++)
+    {
+        int empty = 0;
+        for (int j = 0; j < 8; j++)
+        {
+            auto piece = _board[i][j];
+            if (piece)
+            {
+                if (empty != 0)  
+                {
+                    fen += empty;
+                    empty = 0;
+                }
+                char sym = pieceToSymbol(piece);
+                fen += sym;
+            }
+            else
+            {
+                empty++;
+                std::cout << "empty: " << empty << std::endl;
+                if (empty == 8) 
+                {
+                    fen += std::to_string(empty);
+                }
+            }
+        }
+        if (i != 7) fen += '/';
+
+    }
+    return fen;
+}
+
 // ========= Private =============
 
 void ChessModel::toggleTurn()
@@ -106,4 +143,31 @@ void ChessModel::toggleTurn()
 }
 
 
+char ChessModel::pieceToSymbol(std::shared_ptr<Piece> p)
+{
+    if (p->getColor() == Color::White)
+    {
+        switch (p->getType())
+        {
+            case PieceType::Pawn: return 'P';
+            case PieceType::Rook: return 'R';
+            case PieceType::Knight: return 'N';
+            case PieceType::Bishop: return 'B';
+            case PieceType::Queen: return 'Q';
+            case PieceType::King: return 'K';
+        }
+    }
+    else
+    {
+        switch (p->getType())
+        {
+            case PieceType::Pawn: return 'p';
+            case PieceType::Rook: return 'r';
+            case PieceType::Knight: return 'n';
+            case PieceType::Bishop: return 'b';
+            case PieceType::Queen: return 'q';
+            case PieceType::King: return 'k';
+        }
+    }
+}
 

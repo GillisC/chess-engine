@@ -78,3 +78,10 @@ TEST_CASE("Check works", "[king][move-generation]")
     REQUIRE(validMoves.size() == 6);
     // REQUIRE(piece->getValidMoves(board, ChessBoard::convertNotation("d6")).size() == 6);
 }
+
+TEST_CASE("Export game state using FEN", "[backend]")
+{
+    ChessModel model;
+    std::string expected = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    REQUIRE(model.getFEN() == expected);
+}
