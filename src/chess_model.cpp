@@ -4,7 +4,7 @@ ChessModel::ChessModel() :
     _owned_board(), _board(_owned_board) 
 {
     controllers[Color::White] = std::make_unique<HumanController>();
-    controllers[Color::Black] = std::make_unique<EngineController>();
+    controllers[Color::Black] = std::make_unique<HumanController>();
 }
 
 ChessModel::ChessModel(ChessBoard& board) :

@@ -29,6 +29,8 @@ ChessApp::ChessApp()
 
     _textureManager.load("white_king",   "../assets/sprites/white_king.png");
     _textureManager.load("black_king",   "../assets/sprites/black_king.png");
+
+    initPromotionSpriteMap();
 }
 
 
@@ -63,4 +65,42 @@ void ChessApp::start()
 
         _window.display();
     }
+}
+
+void ChessApp::initPromotionSpriteMap()
+{
+    sf::Sprite sprite;
+    // 0 - 3: white pieces
+    sprite.setTexture(_textureManager.get("white_queen"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Queen));
+    sprite.setTexture(_textureManager.get("white_rook"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Rook));
+    sprite.setTexture(_textureManager.get("white_bishop"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Bishop));
+    sprite.setTexture(_textureManager.get("white_knight"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Knight));
+
+    // 4 - 7: black pieces
+    sprite.setTexture(_textureManager.get("black_queen"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Queen));
+    sprite.setTexture(_textureManager.get("black_rook"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Rook));
+    sprite.setTexture(_textureManager.get("black_bishop"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Bishop));
+    sprite.setTexture(_textureManager.get("black_knight"));
+    centerOrigin(sprite);
+    _uiState.promotionSprites.push_back(std::pair(sprite, PieceType::Knight));
+}
+
+void ChessApp::centerOrigin(sf::Sprite& sprite)
+{
+    auto bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.left + bounds.width / 2.0f, bounds.top + bounds.height / 2.0f);
 }

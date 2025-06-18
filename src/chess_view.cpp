@@ -1,8 +1,11 @@
 #include "chess_view.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
 
 ChessView::ChessView(ChessModel& model, TextureManager& manager, UIState& uiState) :
-    _model(model), _manager(manager), _uiState(uiState) {}
+    _model(model), _manager(manager), _uiState(uiState) 
+{
+}
 
 void ChessView::render(sf::RenderWindow& window)
 {
@@ -126,4 +129,57 @@ void ChessView::render(sf::RenderWindow& window)
 
         }
     }
+    if (_uiState.promotionMove.has_value())
+    {
+        renderPromotionUI(window);
+    }
 }
+
+void ChessView::renderPromotionUI(sf::RenderWindow& window)
+{
+    sf::Texture queenTex, rookTex, bishopTex, knightTex;
+    int spriteIndex;
+    if (_model.getTurn() == Color::White)
+       spriteIndex = 0; 
+    else
+        spriteIndex = 4;
+
+    BoardPosition promoteSquare = _uiState.promotionMove.value()->to;
+     
+    auto sizeVec = window.getSize();
+    int width = sizeVec.x;
+    
+    float square_side = (width * Config::BoardAspectRatio) / 8;
+    float boxX = getSideMargin(window) + square_side * promoteSquare.x() + square_side * 0.5;
+    float boxY = getSideMargin(window) + square_side * 2 + square_side * 0.5;
+
+    _uiState.promotionSprites[spriteIndex].first.setPosition(boxX, boxY);
+    _uiState.promotionSprites[spriteIndex + 1].first.setPosition(boxX, boxY + square_side);
+    _uiState.promotionSprites[spriteIndex + 2].first.setPosition(boxX, boxY + (square_side * 2));
+    _uiState.promotionSprites[spriteIndex + 3].first.setPosition(boxX, boxY + (square_side * 3));
+
+    // Draw a box background
+    sf::RectangleShape box(sf::Vector2f(square_side, square_side * 4));
+    box.setPosition(boxX - square_side * 0.5, boxY - square_side * 0.5);
+    box.setFillColor({210, 210, 210, 200});
+    box.setOutlineColor({31, 31, 31, 255});
+    box.setOutlineThickness(3.f);
+    window.draw(box);
+
+    window.draw(_uiState.promotionSprites[spriteIndex].first);
+    window.draw(_uiState.promotionSprites[spriteIndex + 1].first);
+    window.draw(_uiState.promotionSprites[spriteIndex + 2].first);
+    window.draw(_uiState.promotionSprites[spriteIndex + 3].first);
+}
+
+float ChessView::getBoardSideLength(sf::RenderWindow& window)
+{
+    return window.getSize().x * Config::BoardAspectRatio;
+}
+
+float ChessView::getSideMargin(sf::RenderWindow& window)
+{
+    auto windowSizeVec = window.getSize();
+    return ( windowSizeVec.x - (window.getSize().x * Config::BoardAspectRatio) ) / 2;
+}
+    

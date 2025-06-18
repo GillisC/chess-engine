@@ -35,6 +35,7 @@ target_include_directories(ChessEngineLib PUBLIC ${INCLUDE_DIR})
 target_link_libraries(ChessEngineLib PUBLIC sfml-graphics sfml-window sfml-system)
 target_compile_options(ChessEngineLib PRIVATE
     -Wall
+    -g
 )
 
 # Main executable

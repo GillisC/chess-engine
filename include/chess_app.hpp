@@ -23,4 +23,8 @@ class ChessApp
 public:
     ChessApp();
     void start();
+
+private:
+    void initPromotionSpriteMap();
+    void centerOrigin(sf::Sprite& sprite);
 };
