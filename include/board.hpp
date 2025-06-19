@@ -57,6 +57,11 @@ public:
     void checkEnPassant(const Move m);
     // Returns true if king with the provided color is in check
     bool isKingInCheck(Color color);
+
+    // Overloads
+    std::vector<std::shared_ptr<Piece>>& operator[](size_t rank);
+    const std::vector<std::shared_ptr<Piece>>& operator[](size_t rank) const;
+
     
     struct BoardIterator
     {

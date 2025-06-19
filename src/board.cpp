@@ -361,3 +361,11 @@ void ChessBoard::checkEnPassant(const Move m)
     }
 
 }
+std::vector<std::shared_ptr<Piece>>& ChessBoard::operator[](size_t rank)
+{
+    return _board_data[rank];
+}
+const std::vector<std::shared_ptr<Piece>>& ChessBoard::operator[](size_t rank) const
+{
+    return _board_data[rank];
+}

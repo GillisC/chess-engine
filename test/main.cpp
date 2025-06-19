@@ -78,3 +78,63 @@ TEST_CASE("Check works", "[king][move-generation]")
     REQUIRE(validMoves.size() == 6);
     // REQUIRE(piece->getValidMoves(board, ChessBoard::convertNotation("d6")).size() == 6);
 }
+
+TEST_CASE("Export game state using FEN", "[backend][fen]")
+{
+    ChessModel model;
+    std::string expected = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    REQUIRE(model.getFEN() == expected);
+}
+
+
+TEST_CASE("Import game state using FEN", "[backend][fen]") {
+    std::string fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+    ChessModel model;
+    model.loadFEN(fen);  // Assuming this sets up the board from a FEN string
+
+    REQUIRE(model.getFEN() == fen);
+}
+
+TEST_CASE("Load full game state from FEN", "[backend][fen]") {
+    std::string fen = "rnbqkbnr/pp1ppppp/8/2p5/8/8/PPPPPPPP/RNBQKBNR b KQkq c6 3 2";
+
+    ChessModel model;
+    model.loadFEN(fen);
+
+    ChessBoard& board = model.getBoard();
+
+    // 1. Round-trip test
+    REQUIRE(model.getFEN() == fen);
+
+    // 2. Active color
+    REQUIRE(model.getTurn() == Color::Black);
+
+    // 3. Castling rights
+    // REQUIRE(model.canCastle(Color::White, CastleSide::KingSide));
+    // REQUIRE(model.canCastle(Color::White, CastleSide::QueenSide));
+    // REQUIRE(model.canCastle(Color::Black, CastleSide::KingSide));
+    // REQUIRE(model.canCastle(Color::Black, CastleSide::QueenSide));
+
+    // 4. En passant square
+    REQUIRE(board.getEnPassantTarget().has_value());
+    REQUIRE(board.getEnPassantTarget().value() == ChessBoard::convertNotation("c6"));
+
+    // 5. Halfmove clock
+    REQUIRE(model.getHalfMoves() == 3);
+
+    // 6. Fullmove number
+    REQUIRE(model.getFullMoves() == 2);
+
+    // 7. Board setup checks
+    auto pieceC5 = board.at("c4");
+    REQUIRE(pieceC5 != nullptr);
+    REQUIRE(pieceC5->getType() == PieceType::Pawn);
+    REQUIRE(pieceC5->getColor() == Color::Black);
+
+    auto pieceD8 = board.at("d8");
+    REQUIRE(pieceD8 != nullptr);
+    REQUIRE(pieceD8->getType() == PieceType::Queen);
+    REQUIRE(pieceD8->getColor() == Color::White);
+}
+
