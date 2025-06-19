@@ -4,6 +4,7 @@
 
 #include "board.hpp"
 #include "move.hpp"
+#include "board_position.hpp"
 #include "human_controller.hpp"
 #include "engine_controller.hpp"
 
@@ -13,6 +14,9 @@ class ChessModel
     ChessBoard& _board;
     std::map<Color, std::unique_ptr<Controller>> controllers;
     Color _currentTurn = Color::White;
+
+    unsigned int _halfMoves = 0;
+    unsigned int _fullMoves = 1; // Start at 1
     
 public:
     ChessModel();
@@ -45,6 +49,12 @@ public:
 
     // Sets the model game state based on the provided FEN string
     void loadFEN(const std::string& fenString);
+
+    unsigned int getHalfMoves() const;
+    unsigned int getFullMoves() const;
+    
+    void setHalfMoves(unsigned int val);
+    void setFullMoves(unsigned int val);
 
 private:
     void toggleTurn();

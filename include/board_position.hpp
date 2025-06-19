@@ -23,7 +23,33 @@ public:
 
     int x() const { return _x; }
     int y() const { return _y; }
-    
+
+    static std::string positionToNotation(BoardPosition& pos)
+    {
+        if (pos.x() < 0 || pos.x() > 7 || pos.y() < 0 || pos.y() > 7)
+        {
+            throw std::out_of_range("BoardPosition is out of bounds");
+        }
+
+        char file = 'a' + pos.x();     // 'a' through 'h'
+        char rank = '1' + pos.y();     // '1' through '8'
+
+        return std::string{file, rank};
+    }
+
+    static BoardPosition notationToPosition(std::string_view& pos)
+    {
+        if (pos.size() != 2)
+        {
+            throw std::invalid_argument("Error pos is not of size 2");
+        }
+
+        int col = pos[0] - 'a';
+        int row = pos[1] - '1';
+
+        return BoardPosition({col, row});
+    }
+
     bool operator==(const BoardPosition& other) const
     {
         return (_x == other.x() && _y == other.y());
