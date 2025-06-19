@@ -24,7 +24,7 @@ public:
     int x() const { return _x; }
     int y() const { return _y; }
 
-    static std::string positionToNotation(BoardPosition& pos)
+    static std::string positionToNotation(const BoardPosition& pos)
     {
         if (pos.x() < 0 || pos.x() > 7 || pos.y() < 0 || pos.y() > 7)
         {

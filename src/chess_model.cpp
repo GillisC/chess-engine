@@ -225,7 +225,6 @@ std::string ChessModel::getFEN()
 
     // En passant
     auto enPTarget = _board.getEnPassantTarget();
-    std::cout << "Get FEN enpassant has value: " << enPTarget.has_value() << std::endl;
     if (enPTarget.has_value()) enPassantTarget = BoardPosition::positionToNotation(enPTarget.value());
     else enPassantTarget = "-";
 
