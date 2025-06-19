@@ -37,7 +37,7 @@ public:
         return std::string{file, rank};
     }
 
-    static BoardPosition notationToPosition(std::string_view& pos)
+    static BoardPosition notationToPosition(std::string& pos)
     {
         if (pos.size() != 2)
         {

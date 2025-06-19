@@ -1,5 +1,7 @@
 #include "chess_model.hpp"
 #include "board_position.hpp"
+#include <sstream>
+#include <string>
 #include <utility>
 
 ChessModel::ChessModel() : 
@@ -14,6 +16,11 @@ ChessModel::ChessModel(ChessBoard& board) :
 {
     controllers[Color::White] = std::make_unique<HumanController>();
     controllers[Color::Black] = std::make_unique<HumanController>();
+}
+
+ChessBoard& ChessModel::getBoard()
+{
+    return _board;
 }
 
 std::shared_ptr<Piece> ChessModel::atBoardPosition(const BoardPosition& pos)
@@ -110,6 +117,11 @@ Color ChessModel::getTurn()
     return _currentTurn;
 }
 
+void ChessModel::setTurn(Color c)
+{
+    _currentTurn = c;
+}
+
 std::string ChessModel::getFEN()
 {
     // FEN notation encodes the state of a chessboard into a single string
@@ -134,7 +146,7 @@ std::string ChessModel::getFEN()
             {
                 if (empty != 0)  
                 {
-                    boardState += empty;
+                    boardState += std::to_string(empty);
                     empty = 0;
                 }
                 char sym = pieceToSymbol(piece);
@@ -143,8 +155,11 @@ std::string ChessModel::getFEN()
             else
             {
                 empty++;
-                std::cout << "empty: " << empty << std::endl;
                 if (empty == 8) 
+                {
+                    boardState += std::to_string(empty);
+                }
+                else if (j == 7 && empty != 0)
                 {
                     boardState += std::to_string(empty);
                 }
@@ -210,6 +225,7 @@ std::string ChessModel::getFEN()
 
     // En passant
     auto enPTarget = _board.getEnPassantTarget();
+    std::cout << "Get FEN enpassant has value: " << enPTarget.has_value() << std::endl;
     if (enPTarget.has_value()) enPassantTarget = BoardPosition::positionToNotation(enPTarget.value());
     else enPassantTarget = "-";
 
@@ -219,6 +235,89 @@ std::string ChessModel::getFEN()
            enPassantTarget + " " + 
            std::to_string(getHalfMoves()) + " " + 
            std::to_string(getFullMoves());
+}
+
+void ChessModel::loadFEN(const std::string& fenString)
+{
+    std::string boardLayout, toMove, castling, enPassant;
+    unsigned int halfMoves, fullMoves;
+
+    ChessBoard board;
+    board.clear();
+
+    std::istringstream iss(fenString);
+    iss >> boardLayout >> toMove >> castling >> enPassant >> halfMoves >> fullMoves;
+
+    // Extract each rank of the board layout to a vector
+    std::vector<std::string> ranks;
+    std::stringstream ss(boardLayout);
+    std::string row;
+    while(std::getline(ss, row, '/'))
+    {
+        ranks.push_back(row);
+    }
+
+    for (int rank = 0; rank < 8; ++rank) {
+        const std::string& rowStr = ranks[rank];
+        int file = 0; // column index
+
+        for (char c : rowStr) {
+            if (std::isdigit(c)) {
+                file += c - '0'; // skip empty squares
+            } else {
+                Color color = std::isupper(c) ? Color::White : Color::Black;
+                PieceType type = charToPieceType(std::tolower(c));
+                board.place(type, color, BoardPosition(file, rank));
+                ++file;
+            }
+        }
+    }
+
+    // Set toMove
+    if (toMove == "w") setTurn(Color::White);
+    else setTurn(Color::Black);
+    
+    // Set castling
+    char lwr, rwr, lbr, rbr;
+    rwr = castling[0];
+    lwr = castling[1];
+    lbr = castling[2];
+    rbr = castling[3];
+
+    if (rwr == '-')
+    {
+        auto piece = _board.at("h8");
+        if (piece && piece->getType() == PieceType::Rook)
+            piece->incrementMoved();
+    }
+    if (lwr == '-')
+    {
+        auto piece = _board.at("a8");
+        if (piece && piece->getType() == PieceType::Rook)
+            piece->incrementMoved();
+    }
+    if (rbr == '-')
+    {
+        auto piece = _board.at("h1");
+        if (piece && piece->getType() == PieceType::Rook)
+            piece->incrementMoved();
+    }
+    if (lbr == '-')
+    {
+        auto piece = _board.at("a1");
+        if (piece && piece->getType() == PieceType::Rook)
+            piece->incrementMoved();
+    }
+
+    // Set enpassant
+    if (enPassant != "-")
+        board.setEnPassantTarget(BoardPosition::notationToPosition(enPassant));
+
+
+    setHalfMoves(halfMoves);
+    setFullMoves(fullMoves);
+
+    _board = board;
 }
 
 unsigned int ChessModel::getHalfMoves() const
@@ -276,3 +375,16 @@ char ChessModel::pieceToSymbol(std::shared_ptr<Piece> p)
     }
 }
 
+PieceType ChessModel::charToPieceType(char c)
+{
+    switch (c)
+    {
+        case 'p': return PieceType::Pawn;
+        case 'n': return PieceType::Knight;
+        case 'b': return PieceType::Bishop;
+        case 'r': return PieceType::Rook;
+        case 'q': return PieceType::Queen;
+        case 'k': return PieceType::King;
+        default: throw std::invalid_argument("Unknown piece character");
+    }
+}

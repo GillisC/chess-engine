@@ -1,6 +1,8 @@
 #pragma once
 
 #include <map>
+#include <string>
+#include <sstream>
 
 #include "board.hpp"
 #include "move.hpp"
@@ -22,6 +24,7 @@ public:
     ChessModel();
     ChessModel(ChessBoard& board);
 
+    ChessBoard& getBoard();
     // Returns the piece at the provided BoardPosition
     // If there isn't a piece present it will return nullptr
     std::shared_ptr<Piece> atBoardPosition(const BoardPosition& pos);
@@ -42,6 +45,7 @@ public:
     bool isBlackPiece(const BoardPosition& pos);
 
     Color getTurn();
+    void setTurn(Color c);
 
     // FEN
     // Exports the current gamestate in the FEN (Forsyth-Edwards Notation) format
@@ -60,5 +64,6 @@ private:
     void toggleTurn();
     char pieceToSymbol(std::shared_ptr<Piece> p);
     std::shared_ptr<Piece> symbolToPiece(char sym);
+    PieceType charToPieceType(char c);
 
 }; 
