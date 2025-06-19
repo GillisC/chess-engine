@@ -18,10 +18,10 @@ void ChessController::handleEvent(sf::Event& event)
     {
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            std::cout << "Mouse has been pressed at: x="
-                      << event.mouseButton.x << ", "
-                      << "y=" << event.mouseButton.y
-                      << std::endl;
+            // std::cout << "Mouse has been pressed at: x="
+            //           << event.mouseButton.x << ", "
+            //           << "y=" << event.mouseButton.y
+            //           << std::endl;
 
             const sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
 
@@ -54,14 +54,14 @@ void ChessController::handleEvent(sf::Event& event)
                 // Get the pressed board square index
                 int xCord = (event.mouseButton.x - (Config::WindowWidth - board_width) / 2.0f) / square_side_len;
                 int yCord = (event.mouseButton.y - (Config::WindowHeight - board_height) / 2.0f) / square_side_len;
-                std::cout << "xCord=" << xCord << ", yCord=" << yCord << std::endl;
+                // std::cout << "xCord=" << xCord << ", yCord=" << yCord << std::endl;
 
                 if (_model.isPiece({xCord, yCord}) && 
                     _model.atBoardPosition({xCord, yCord})->getColor() == _model.getTurn())
                 {
                     _uiState.selectedPiece = BoardPosition({xCord, yCord});
                     auto validMoves = _model.getMoves({xCord, yCord});
-                    std::cout << "Valid moves len: " << validMoves.size() << std::endl;
+                    // std::cout << "Valid moves len: " << validMoves.size() << std::endl;
 
                 }
                 else if (_uiState.selectedPiece.has_value())

@@ -309,7 +309,7 @@ void ChessBoard::undoMove(const Move m)
     // Move the secondary piece back if provided
     if (m.secondaryFrom.has_value() && m.secondaryTo.has_value())
     {
-        at(m.secondaryFrom.value())->decrementMoved();
+        at(m.secondaryTo.value())->decrementMoved();
         move(m.secondaryTo.value(), m.secondaryFrom.value());
     }
     // En passant execution bring back the piece that been en passant'ed

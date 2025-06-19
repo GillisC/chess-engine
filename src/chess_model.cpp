@@ -39,10 +39,15 @@ std::vector<Move> ChessModel::getMoves(const BoardPosition& pos)
     {
         return {};
     }
-    std::vector<Move> possibleMoves = atBoardPosition(pos)->getValidMoves(_board, pos);
-
     std::vector<Move> validMoves = {};
-    auto current = _currentTurn;
+    auto current = getTurn();
+
+    std::vector<Move> possibleMoves = _board.at(pos)->getValidMoves(_board, pos);
+     
+    if (possibleMoves.size() == 0)
+    {
+        return validMoves;
+    }
 
     // Filter out moves which lead to the king in check
     for (auto& move : possibleMoves)
@@ -62,8 +67,7 @@ std::vector<Move> ChessModel::getAllLegalMoves(Color color)
     {
         auto square = *it;
         auto pos = it.position();
-
-        if (square != nullptr && square->getColor() == color)
+        if (square && square->getColor() == color)
         {
             auto moves = getMoves(pos);
             for (Move m : moves)
@@ -72,13 +76,24 @@ std::vector<Move> ChessModel::getAllLegalMoves(Color color)
             }
         }
     }
+    if (legalMoves.size() == 0)
+    {
+        if (color == Color::White)
+        {
+            std::cout << "Black Player Won!" << std::endl;
+        }
+        else 
+        {
+            std::cout << "White Player Won!" << std::endl;
+        }
+    }
     return legalMoves;
 }
 
 void ChessModel::executeMove(const Move m)
 {
+    std::cout << getFEN() << std::endl;
     _board.executeMove(m);
-
     if (!m.captured.has_value() && m.primaryPiece->getType() != PieceType::Pawn)
         _halfMoves++;
     else
@@ -95,11 +110,11 @@ void ChessModel::executeMove(const Move m)
 void ChessModel::startTurn()
 {
     // Get the current controller
-    auto& currentController = controllers[_currentTurn];
+    auto& currentController = controllers[getTurn()];
     
     if (currentController->type() == ControllerType::Engine)
     {
-        auto legalMoves = getAllLegalMoves(_currentTurn);
+        auto legalMoves = getAllLegalMoves(getTurn());
         Move move = currentController->chooseMove(legalMoves, _board);
         executeMove(move);
     }
