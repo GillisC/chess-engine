@@ -15,7 +15,7 @@ enum class ControllerType
 class Controller
 {
 public:
-    virtual Move chooseMove(std::vector<Move>& legalMoves, ChessBoard& board) const = 0;
+    virtual Move chooseMove(std::vector<Move>& legalMoves, ChessBoard& board) = 0;
     virtual ControllerType type() const = 0;
     virtual ~Controller() = default;
 };
