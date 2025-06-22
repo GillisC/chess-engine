@@ -15,4 +15,7 @@ public:
 private:
     int materialEvalutation(ChessBoard& board);
     int pieceValue(std::shared_ptr<Piece> piece);
+
+    int piecePlacementEvaluation(ChessBoard& board);
+    int placementValue(PieceType type, const BoardPosition pos);
 };

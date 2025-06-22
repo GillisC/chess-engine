@@ -97,3 +97,22 @@ int EngineController::pieceValue(std::shared_ptr<Piece> piece)
         default: return 0;
     }
 }
+
+int EngineController::piecePlacementEvaluation(ChessBoard& board)
+{
+    int score = 0;
+    for (auto it = board.begin(); it != board.end(); ++it) 
+    {
+        auto piece = *it;
+        if (piece)
+        {
+            int val = placementValue(piece->getType(), it.position());
+            score += (piece->getColor() == Color::White) ? val : -val;
+        }
+    }
+    return score;
+}
+int EngineController::placementValue(PieceType type, const BoardPosition pos)
+{
+
+}
