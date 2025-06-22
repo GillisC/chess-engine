@@ -1,4 +1,6 @@
 #include "engine_controller.hpp"
+#include "piece_square_tables.hpp"
+#include "piece_type.hpp"
 #include <random>
 
 Move EngineController::chooseMove(std::vector<Move>& legalMoves, ChessBoard& board)
@@ -13,14 +15,15 @@ Move EngineController::chooseMove(std::vector<Move>& legalMoves, ChessBoard& boa
     size_t index = 0;
     for (auto& move : legalMoves)
     {
+        score = 0;
         board.executeMove(move);
         // Evalutate the board with the move executed
 
         // Evalutes the board solely based on material present
-        score = materialEvalutation(board);
+        score += materialEvalutation(board);
 
         // Evalutes based on piece placement
-
+        score += piecePlacementEvaluation(board);
 
         scoredMoves.push_back(std::pair(index, score));
         board.undoMove(move);
@@ -106,13 +109,33 @@ int EngineController::piecePlacementEvaluation(ChessBoard& board)
         auto piece = *it;
         if (piece)
         {
-            int val = placementValue(piece->getType(), it.position());
+            int val = placementValue(piece->getType(), piece->getColor(), it.position());
             score += (piece->getColor() == Color::White) ? val : -val;
         }
     }
     return score;
 }
-int EngineController::placementValue(PieceType type, const BoardPosition pos)
+int EngineController::placementValue(PieceType type, Color color, const BoardPosition pos)
 {
-
+    bool isWhite = (color == Color::White);
+    int squareIndex = pos.y() * 8 + pos.x();
+    int flippedIndex = (7 - pos.y()) * 8 + pos.x();
+    
+    switch (type)
+    {
+        case PieceType::Pawn:
+            return isWhite ? PAWN_SQUARE_TABLE[squareIndex] : PAWN_SQUARE_TABLE[flippedIndex];
+        case PieceType::Knight:
+            return isWhite ? KNIGHT_SQUARE_TABLE[squareIndex] : KNIGHT_SQUARE_TABLE[flippedIndex];
+        case PieceType::Bishop:
+            return isWhite ? BISHOP_SQUARE_TABLE[squareIndex] : KNIGHT_SQUARE_TABLE[flippedIndex];
+        case PieceType::Rook:
+            return isWhite ? ROOK_SQUARE_TABLE[squareIndex] : ROOK_SQUARE_TABLE[flippedIndex];
+        case PieceType::Queen:
+            return isWhite ? QUEEN_SQUARE_TABLE[squareIndex] : QUEEN_SQUARE_TABLE[flippedIndex];
+        case PieceType::King:
+            return isWhite ? KING_MIDDLE_SQUARE_TABLE[squareIndex] : KING_MIDDLE_SQUARE_TABLE[flippedIndex];
+        default:
+            return 0;
+    }
 }

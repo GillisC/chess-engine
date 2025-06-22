@@ -1,10 +1,12 @@
 #pragma once
 
+#include <random>
+#include <algorithm>
+
 #include "controller.hpp"
 #include "move.hpp"
 #include "board.hpp"
-#include <random>
-#include <algorithm>
+#include "piece_square_tables.hpp"
 
 class EngineController : public Controller
 {
@@ -17,5 +19,5 @@ private:
     int pieceValue(std::shared_ptr<Piece> piece);
 
     int piecePlacementEvaluation(ChessBoard& board);
-    int placementValue(PieceType type, const BoardPosition pos);
+    int placementValue(PieceType type, Color color, const BoardPosition pos);
 };
