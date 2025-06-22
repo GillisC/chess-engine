@@ -9,6 +9,7 @@ ChessModel::ChessModel() :
 {
     controllers[Color::White] = std::make_unique<HumanController>();
     controllers[Color::Black] = std::make_unique<EngineController>();
+    startTurn();
 }
 
 ChessModel::ChessModel(ChessBoard& board) :
