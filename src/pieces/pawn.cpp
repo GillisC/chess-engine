@@ -52,7 +52,8 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
         // Move two steps forward
         if (board.isInBounds({xCord, yCord - 2}) && 
             piece->getTimesMoved() == 0 && 
-            !board.isPiece({xCord, yCord - 2})) 
+            !board.isPiece({xCord, yCord - 2}) &&
+            !board.isPiece({xCord, yCord - 1}))
         {
             Move validMove(pos, {xCord, yCord - 2}, board);
             validMoves.push_back(validMove);
@@ -60,14 +61,44 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
         if (board.isInBounds({xCord - 1, yCord - 1}) &&
             board.isBlack({xCord - 1, yCord - 1}))
         {
-            Move validMove(pos, {xCord - 1, yCord - 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord - 1, yCord - 1};
+            if (yCord - 1 == 0)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else 
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         if (board.isInBounds({xCord + 1, yCord - 1}) &&
             board.isBlack({xCord + 1, yCord - 1})) 
         {
-            Move validMove(pos, {xCord + 1, yCord - 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord + 1, yCord - 1};
+            if (yCord - 1 == 0)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else 
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         // White en passant left
         if (board.isInBounds({xCord - 1, yCord - 1}) &&
@@ -107,20 +138,53 @@ std::vector<Move> Pawn::getValidMoves(ChessBoard& board, const BoardPosition& po
             }
         }
         // Move two steps forward
-        if (board.isInBounds({xCord, yCord + 2}) && (piece->getTimesMoved() == 0))
+        if (board.isInBounds({xCord, yCord + 2}) && 
+            (piece->getTimesMoved() == 0) && 
+            !board.isPiece({xCord, yCord + 2}) &&
+            !board.isPiece({xCord, yCord + 1}))
         {
             Move validMove(pos, {xCord, yCord + 2}, board);
             validMoves.push_back(validMove);
         }
         if (board.isInBounds({xCord - 1, yCord + 1}) && board.isWhite({xCord - 1, yCord + 1})) 
         {
-            Move validMove(pos, {xCord - 1, yCord + 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord - 1, yCord + 1};
+            if (yCord + 1 == 7)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         if (board.isInBounds({xCord + 1, yCord + 1}) && board.isWhite({xCord + 1, yCord + 1}))
         {
-            Move validMove(pos, {xCord + 1, yCord + 1}, board);
-            validMoves.push_back(validMove);
+            BoardPosition targetPos = {xCord + 1, yCord + 1};
+            if (yCord + 1 == 7)
+            {
+                Move prom1(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Rook);
+                Move prom2(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Bishop);
+                Move prom3(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Knight);
+                Move prom4(pos, targetPos, board, std::nullopt, std::nullopt, PieceType::Queen);
+                validMoves.push_back(prom1);
+                validMoves.push_back(prom2);
+                validMoves.push_back(prom3);
+                validMoves.push_back(prom4);
+            }
+            else
+            {
+                Move validMove(pos, targetPos, board);
+                validMoves.push_back(validMove);
+            }
         }
         // Black en passant left
         if (board.isInBounds({xCord - 1, yCord + 1}) &&
