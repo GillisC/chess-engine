@@ -5,7 +5,6 @@
 
 Move EngineController::chooseMove(std::vector<Move>& legalMoves, ChessBoard& board)
 {
-    std::cout << "Engine chooseing move" << std::endl;
     // Store the move and the evaluation score when executed
     std::vector<std::pair<size_t, int>> scoredMoves;
     int score;
@@ -128,7 +127,7 @@ int EngineController::placementValue(PieceType type, Color color, const BoardPos
         case PieceType::Knight:
             return isWhite ? KNIGHT_SQUARE_TABLE[squareIndex] : KNIGHT_SQUARE_TABLE[flippedIndex];
         case PieceType::Bishop:
-            return isWhite ? BISHOP_SQUARE_TABLE[squareIndex] : KNIGHT_SQUARE_TABLE[flippedIndex];
+            return isWhite ? BISHOP_SQUARE_TABLE[squareIndex] : BISHOP_SQUARE_TABLE[flippedIndex];
         case PieceType::Rook:
             return isWhite ? ROOK_SQUARE_TABLE[squareIndex] : ROOK_SQUARE_TABLE[flippedIndex];
         case PieceType::Queen:
